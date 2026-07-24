@@ -1,22 +1,45 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
-  version: 0.1.0
-  description: API specification
+  version: 1.0.0
+  description: SAS Platform API — Internal Logistics Management
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
-    description: Health operations
+    description: Health check
+  - name: auth
+    description: Authentication
+  - name: carriers
+    description: Carrier management
+  - name: vehicles
+    description: Vehicle management
+  - name: drivers
+    description: Driver management
+  - name: shippers
+    description: Shipper management
+  - name: customers
+    description: Shipper customer management
+  - name: products
+    description: Product management
+  - name: shipments
+    description: Shipment lifecycle
+  - name: waybills
+    description: Waybill management
+  - name: notifications
+    description: Notification management
+  - name: conversations
+    description: Chat conversations
+  - name: support
+    description: Support tickets
+
 paths:
-  /healthz:
+  /v1/healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +47,2051 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ─── AUTH ─────────────────────────────────────────────────────────────────
+  /v1/auth/register/carrier:
+    post:
+      operationId: registerCarrier
+      tags: [auth]
+      summary: Self-register a carrier with at least one vehicle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarrierRegistrationInput"
+      responses:
+        "201":
+          description: Registration submitted – pending activation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegistrationResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/auth/register/shipper:
+    post:
+      operationId: registerShipper
+      tags: [auth]
+      summary: Self-register a shipper
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipperRegistrationInput"
+      responses:
+        "201":
+          description: Registration submitted – pending activation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegistrationResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login – returns HttpOnly session cookie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResult"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Account inactive
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout – clears session cookie
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /v1/auth/me:
+    get:
+      operationId: getCurrentUser
+      tags: [auth]
+      summary: Get the currently authenticated user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Current user info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrentUser"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ─── CARRIERS ─────────────────────────────────────────────────────────────
+  /v1/carriers:
+    get:
+      operationId: listCarriers
+      tags: [carriers]
+      summary: List all carriers (Admin only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending_activation, active, disabled]
+        - name: vehicle_type
+          in: query
+          schema:
+            $ref: "#/components/schemas/VehicleType"
+        - name: vehicle_category
+          in: query
+          schema:
+            $ref: "#/components/schemas/VehicleCategory"
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        "200":
+          description: List of carriers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CarrierListResponse"
+
+  /v1/carriers/{carrierId}:
+    get:
+      operationId: getCarrier
+      tags: [carriers]
+      summary: Get carrier details (Admin or own carrier)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/carrierId"
+      responses:
+        "200":
+          description: Carrier details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CarrierDetail"
+        "404":
+          description: Carrier not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/carriers/{carrierId}/activate:
+    patch:
+      operationId: activateCarrier
+      tags: [carriers]
+      summary: Activate carrier account (Admin only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/carrierId"
+      responses:
+        "200":
+          description: Account activated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carrier"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/carriers/{carrierId}/disable:
+    patch:
+      operationId: disableCarrier
+      tags: [carriers]
+      summary: Disable carrier account (Admin only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/carrierId"
+      responses:
+        "200":
+          description: Account disabled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carrier"
+
+  # ─── VEHICLES ─────────────────────────────────────────────────────────────
+  /v1/carriers/{carrierId}/vehicles:
+    get:
+      operationId: listVehicles
+      tags: [vehicles]
+      summary: List carrier vehicles
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/carrierId"
+      responses:
+        "200":
+          description: List of vehicles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Vehicle"
+
+    post:
+      operationId: addVehicle
+      tags: [vehicles]
+      summary: Add a vehicle to carrier (Carrier or Admin)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/carrierId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VehicleInput"
+      responses:
+        "201":
+          description: Vehicle added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vehicle"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/carriers/{carrierId}/vehicles/{vehicleId}:
+    delete:
+      operationId: removeVehicle
+      tags: [vehicles]
+      summary: Remove a vehicle from carrier
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/carrierId"
+        - $ref: "#/components/parameters/vehicleId"
+      responses:
+        "200":
+          description: Vehicle removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "409":
+          description: Vehicle assigned to active shipment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ─── DRIVERS ──────────────────────────────────────────────────────────────
+  /v1/carriers/{carrierId}/drivers:
+    get:
+      operationId: listDrivers
+      tags: [drivers]
+      summary: List carrier drivers
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/carrierId"
+      responses:
+        "200":
+          description: List of drivers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Driver"
+
+    post:
+      operationId: createDriver
+      tags: [drivers]
+      summary: Add a driver to carrier
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/carrierId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DriverInput"
+      responses:
+        "201":
+          description: Driver created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Driver"
+
+  /v1/carriers/{carrierId}/drivers/{driverId}:
+    patch:
+      operationId: updateDriver
+      tags: [drivers]
+      summary: Update driver
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/carrierId"
+        - $ref: "#/components/parameters/driverId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DriverUpdate"
+      responses:
+        "200":
+          description: Driver updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Driver"
+
+    delete:
+      operationId: removeDriver
+      tags: [drivers]
+      summary: Remove a driver
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/carrierId"
+        - $ref: "#/components/parameters/driverId"
+      responses:
+        "200":
+          description: Driver removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  # ─── SHIPPERS ─────────────────────────────────────────────────────────────
+  /v1/shippers:
+    get:
+      operationId: listShippers
+      tags: [shippers]
+      summary: List shippers (Admin only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending_activation, active, disabled]
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: List of shippers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShipperListResponse"
+
+  /v1/shippers/{shipperId}:
+    get:
+      operationId: getShipper
+      tags: [shippers]
+      summary: Get shipper details
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipperId"
+      responses:
+        "200":
+          description: Shipper details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipper"
+
+  /v1/shippers/{shipperId}/activate:
+    patch:
+      operationId: activateShipper
+      tags: [shippers]
+      summary: Activate shipper account (Admin only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipperId"
+      responses:
+        "200":
+          description: Account activated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipper"
+
+  /v1/shippers/{shipperId}/disable:
+    patch:
+      operationId: disableShipper
+      tags: [shippers]
+      summary: Disable shipper account (Admin only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipperId"
+      responses:
+        "200":
+          description: Account disabled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipper"
+
+  # ─── SHIPPER CUSTOMERS ────────────────────────────────────────────────────
+  /v1/shippers/{shipperId}/customers:
+    get:
+      operationId: listShipperCustomers
+      tags: [customers]
+      summary: List shipper's customers
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipperId"
+      responses:
+        "200":
+          description: List of customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ShipperCustomer"
+
+    post:
+      operationId: createShipperCustomer
+      tags: [customers]
+      summary: Add a customer to shipper
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipperId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipperCustomerInput"
+      responses:
+        "201":
+          description: Customer created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShipperCustomer"
+
+  /v1/shippers/{shipperId}/customers/{customerId}:
+    patch:
+      operationId: updateShipperCustomer
+      tags: [customers]
+      summary: Update a shipper customer
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipperId"
+        - $ref: "#/components/parameters/customerId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipperCustomerUpdate"
+      responses:
+        "200":
+          description: Customer updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShipperCustomer"
+
+    delete:
+      operationId: deleteShipperCustomer
+      tags: [customers]
+      summary: Delete a shipper customer
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipperId"
+        - $ref: "#/components/parameters/customerId"
+      responses:
+        "200":
+          description: Customer deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  # ─── PRODUCTS ─────────────────────────────────────────────────────────────
+  /v1/shippers/{shipperId}/products:
+    get:
+      operationId: listProducts
+      tags: [products]
+      summary: List shipper's products
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipperId"
+      responses:
+        "200":
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+
+    post:
+      operationId: createProduct
+      tags: [products]
+      summary: Create a product
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipperId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInput"
+      responses:
+        "201":
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+  /v1/shippers/{shipperId}/products/{productId}:
+    patch:
+      operationId: updateProduct
+      tags: [products]
+      summary: Update a product
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipperId"
+        - $ref: "#/components/parameters/productId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductUpdate"
+      responses:
+        "200":
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+    delete:
+      operationId: deleteProduct
+      tags: [products]
+      summary: Delete a product
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipperId"
+        - $ref: "#/components/parameters/productId"
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  # ─── SHIPMENTS ────────────────────────────────────────────────────────────
+  /v1/shipments:
+    get:
+      operationId: listShipments
+      tags: [shipments]
+      summary: List shipments (filtered by role scope)
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            $ref: "#/components/schemas/ShipmentStatus"
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: List of shipments
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShipmentListResponse"
+
+    post:
+      operationId: createShipment
+      tags: [shipments]
+      summary: Create a new shipment request (Shipper only)
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipmentInput"
+      responses:
+        "201":
+          description: Shipment created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/shipments/{shipmentId}:
+    get:
+      operationId: getShipment
+      tags: [shipments]
+      summary: Get shipment details
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      responses:
+        "200":
+          description: Shipment details with available_actions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShipmentDetail"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/shipments/{shipmentId}/assign-carrier:
+    patch:
+      operationId: assignCarrier
+      tags: [shipments]
+      summary: Assign carrier to shipment (Admin – also used for re-assignment after pricing rejection)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssignCarrierInput"
+      responses:
+        "200":
+          description: Carrier assigned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+        "409":
+          description: Invalid workflow transition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/shipments/{shipmentId}/calculate-pricing:
+    patch:
+      operationId: calculatePricing
+      tags: [shipments]
+      summary: Calculate shipment price using OSRM distance (Admin triggers)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      responses:
+        "200":
+          description: Pricing calculated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+        "422":
+          description: Unable to calculate distance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/shipments/{shipmentId}/send-pricing:
+    patch:
+      operationId: sendPricing
+      tags: [shipments]
+      summary: Send pricing to shipper for approval (Admin)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      responses:
+        "200":
+          description: Pricing sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+
+  /v1/shipments/{shipmentId}/approve-pricing:
+    patch:
+      operationId: approvePricing
+      tags: [shipments]
+      summary: Shipper approves pricing – triggers automatic waybill issuance
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      responses:
+        "200":
+          description: Pricing approved; waybill issued automatically
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+        "403":
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/shipments/{shipmentId}/reject-pricing:
+    patch:
+      operationId: rejectPricing
+      tags: [shipments]
+      summary: Shipper rejects pricing – returns to Admin for re-assignment
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      responses:
+        "200":
+          description: Pricing rejected
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+
+  /v1/shipments/{shipmentId}/start:
+    patch:
+      operationId: startShipment
+      tags: [shipments]
+      summary: Start shipment (Carrier)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      responses:
+        "200":
+          description: Shipment started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+
+  /v1/shipments/{shipmentId}/deliver:
+    patch:
+      operationId: deliverShipment
+      tags: [shipments]
+      summary: Mark shipment as delivered (Carrier)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      responses:
+        "200":
+          description: Shipment delivered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+
+  /v1/shipments/{shipmentId}/cancel:
+    patch:
+      operationId: cancelShipment
+      tags: [shipments]
+      summary: Cancel shipment (Admin or Shipper)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelShipmentInput"
+      responses:
+        "200":
+          description: Shipment cancelled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+
+  /v1/shipments/{shipmentId}/status-history:
+    get:
+      operationId: getShipmentStatusHistory
+      tags: [shipments]
+      summary: Get shipment status change history
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      responses:
+        "200":
+          description: Status history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StatusChange"
+
+  /v1/shipments/{shipmentId}/eligible-carriers:
+    get:
+      operationId: getEligibleCarriers
+      tags: [shipments]
+      summary: Get carriers eligible for assignment based on vehicle type & category (Admin)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      responses:
+        "200":
+          description: Eligible carriers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CarrierWithVehicles"
+
+  # ─── WAYBILLS ─────────────────────────────────────────────────────────────
+  /v1/shipments/{shipmentId}/waybill:
+    get:
+      operationId: getWaybill
+      tags: [waybills]
+      summary: Get waybill for a shipment
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      responses:
+        "200":
+          description: Waybill data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Waybill"
+        "404":
+          description: Waybill not yet issued
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/shipments/{shipmentId}/waybill/download:
+    get:
+      operationId: downloadWaybillPdf
+      tags: [waybills]
+      summary: Download waybill as PDF
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/shipmentId"
+      responses:
+        "200":
+          description: PDF file
+          content:
+            application/pdf:
+              schema:
+                type: string
+        "404":
+          description: Waybill not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ─── NOTIFICATIONS ────────────────────────────────────────────────────────
+  /v1/notifications:
+    get:
+      operationId: listNotifications
+      tags: [notifications]
+      summary: Get notifications for current user
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: unread_only
+          in: query
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 30
+      responses:
+        "200":
+          description: List of notifications
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationListResponse"
+
+  /v1/notifications/{notificationId}/read:
+    patch:
+      operationId: markNotificationRead
+      tags: [notifications]
+      summary: Mark a notification as read
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/notificationId"
+      responses:
+        "200":
+          description: Marked as read
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+
+  /v1/notifications/read-all:
+    patch:
+      operationId: markAllNotificationsRead
+      tags: [notifications]
+      summary: Mark all notifications as read
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: All marked as read
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  # ─── CONVERSATIONS ────────────────────────────────────────────────────────
+  /v1/conversations:
+    get:
+      operationId: listConversations
+      tags: [conversations]
+      summary: List conversations for current user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: List of conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Conversation"
+
+    post:
+      operationId: createConversation
+      tags: [conversations]
+      summary: Start a new conversation
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConversationInput"
+      responses:
+        "201":
+          description: Conversation created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversation"
+
+  /v1/conversations/{conversationId}/messages:
+    get:
+      operationId: listMessages
+      tags: [conversations]
+      summary: List messages in a conversation
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/conversationId"
+      responses:
+        "200":
+          description: List of messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+
+    post:
+      operationId: sendMessage
+      tags: [conversations]
+      summary: Send a message
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/conversationId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageInput"
+      responses:
+        "201":
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+
+  # ─── SUPPORT TICKETS ──────────────────────────────────────────────────────
+  /v1/support/tickets:
+    get:
+      operationId: listSupportTickets
+      tags: [support]
+      summary: List support tickets (scoped by role)
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [open, in_progress, resolved, closed]
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: List of tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SupportTicket"
+
+    post:
+      operationId: createSupportTicket
+      tags: [support]
+      summary: Create a support ticket
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SupportTicketInput"
+      responses:
+        "201":
+          description: Ticket created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupportTicket"
+
+  /v1/support/tickets/{ticketId}:
+    get:
+      operationId: getSupportTicket
+      tags: [support]
+      summary: Get support ticket details
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/ticketId"
+      responses:
+        "200":
+          description: Ticket details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupportTicketDetail"
+
+    patch:
+      operationId: updateSupportTicket
+      tags: [support]
+      summary: Update ticket (Admin – status, assignment)
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/ticketId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SupportTicketUpdate"
+      responses:
+        "200":
+          description: Ticket updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupportTicket"
+
+  /v1/support/tickets/{ticketId}/messages:
+    post:
+      operationId: replySupportTicket
+      tags: [support]
+      summary: Reply to support ticket
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/ticketId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageInput"
+      responses:
+        "201":
+          description: Reply sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupportMessage"
+
+  # ─── ADMIN DASHBOARD ──────────────────────────────────────────────────────
+  /v1/admin/dashboard:
+    get:
+      operationId: getDashboardStats
+      tags: [auth]
+      summary: Get admin dashboard statistics
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+# ─── COMPONENTS ───────────────────────────────────────────────────────────────
 components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sas_session
+
+  parameters:
+    carrierId:
+      name: carrierId
+      in: path
+      required: true
+      schema:
+        type: string
+    vehicleId:
+      name: vehicleId
+      in: path
+      required: true
+      schema:
+        type: string
+    driverId:
+      name: driverId
+      in: path
+      required: true
+      schema:
+        type: string
+    shipperId:
+      name: shipperId
+      in: path
+      required: true
+      schema:
+        type: string
+    customerId:
+      name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+    productId:
+      name: productId
+      in: path
+      required: true
+      schema:
+        type: string
+    shipmentId:
+      name: shipmentId
+      in: path
+      required: true
+      schema:
+        type: string
+    notificationId:
+      name: notificationId
+      in: path
+      required: true
+      schema:
+        type: string
+    conversationId:
+      name: conversationId
+      in: path
+      required: true
+      schema:
+        type: string
+    ticketId:
+      name: ticketId
+      in: path
+      required: true
+      schema:
+        type: string
+
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
+        version:
+          type: string
+        timestamp:
+          type: string
 
+    SuccessResponse:
+      type: object
+      required: [success]
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required: [success, error]
+      properties:
+        success:
+          type: boolean
+          default: false
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: ["object", "null"]
+            correlationId:
+              type: string
+
+    # ─── Enums ──────────────────────────────────────────────────────────────
+    AccountStatus:
+      type: string
+      enum: [pending_activation, active, disabled]
+
+    UserRole:
+      type: string
+      enum: [admin, carrier, shipper]
+
+    VehicleType:
+      type: string
+      enum: [flatbed, refrigerated, cage, tow_truck, curtain_side, container, low_bed, other]
+
+    VehicleCategory:
+      type: string
+      enum: [dyna, single_truck, trailer, semi_trailer, road_train, other]
+
+    ShipmentStatus:
+      type: string
+      enum:
+        - requested
+        - carrier_assigned
+        - pricing_calculated
+        - pricing_sent
+        - pricing_approved
+        - pricing_rejected
+        - waybill_issued
+        - in_transit
+        - delivered
+        - cancelled
+
+    TicketStatus:
+      type: string
+      enum: [open, in_progress, resolved, closed]
+
+    # ─── Auth ────────────────────────────────────────────────────────────────
+    CarrierRegistrationInput:
+      type: object
+      required: [name, email, password, vehicles]
+      properties:
+        name:
+          type: string
+          minLength: 2
+        email:
+          type: string
+        password:
+          type: string
+          minLength: 8
+        phone:
+          type: ["string", "null"]
+        vehicles:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/VehicleInput"
+
+    ShipperRegistrationInput:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+          minLength: 2
+        email:
+          type: string
+        password:
+          type: string
+          minLength: 8
+        phone:
+          type: ["string", "null"]
+
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    RegistrationResponse:
+      type: object
+      required: [id, status, message]
+      properties:
+        id:
+          type: string
+        status:
+          $ref: "#/components/schemas/AccountStatus"
+        message:
+          type: string
+
+    LoginResult:
+      type: object
+      required: [user, role]
+      properties:
+        user:
+          $ref: "#/components/schemas/CurrentUser"
+        role:
+          $ref: "#/components/schemas/UserRole"
+
+    CurrentUser:
+      type: object
+      required: [id, name, email, role, status]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: "#/components/schemas/UserRole"
+        status:
+          $ref: "#/components/schemas/AccountStatus"
+
+    # ─── Carrier ─────────────────────────────────────────────────────────────
+    Carrier:
+      type: object
+      required: [id, name, email, status, created_at]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: ["string", "null"]
+        status:
+          $ref: "#/components/schemas/AccountStatus"
+        created_at:
+          type: string
+
+    CarrierDetail:
+      allOf:
+        - $ref: "#/components/schemas/Carrier"
+        - type: object
+          properties:
+            vehicles:
+              type: array
+              items:
+                $ref: "#/components/schemas/Vehicle"
+            drivers:
+              type: array
+              items:
+                $ref: "#/components/schemas/Driver"
+
+    CarrierWithVehicles:
+      allOf:
+        - $ref: "#/components/schemas/Carrier"
+        - type: object
+          properties:
+            matching_vehicles:
+              type: array
+              items:
+                $ref: "#/components/schemas/Vehicle"
+
+    CarrierListResponse:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Carrier"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    # ─── Vehicle ─────────────────────────────────────────────────────────────
+    Vehicle:
+      type: object
+      required: [id, carrier_id, vehicle_type, vehicle_category, created_at]
+      properties:
+        id:
+          type: string
+        carrier_id:
+          type: string
+        vehicle_type:
+          $ref: "#/components/schemas/VehicleType"
+        vehicle_category:
+          $ref: "#/components/schemas/VehicleCategory"
+        plate_number:
+          type: ["string", "null"]
+        created_at:
+          type: string
+
+    VehicleInput:
+      type: object
+      required: [vehicle_type, vehicle_category]
+      properties:
+        vehicle_type:
+          $ref: "#/components/schemas/VehicleType"
+        vehicle_category:
+          $ref: "#/components/schemas/VehicleCategory"
+        plate_number:
+          type: ["string", "null"]
+
+    # ─── Driver ──────────────────────────────────────────────────────────────
+    Driver:
+      type: object
+      required: [id, carrier_id, name, status, created_at]
+      properties:
+        id:
+          type: string
+        carrier_id:
+          type: string
+        name:
+          type: string
+        phone:
+          type: ["string", "null"]
+        status:
+          $ref: "#/components/schemas/AccountStatus"
+        created_at:
+          type: string
+
+    DriverInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          minLength: 2
+        phone:
+          type: ["string", "null"]
+
+    DriverUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+        phone:
+          type: ["string", "null"]
+        status:
+          $ref: "#/components/schemas/AccountStatus"
+
+    # ─── Shipper ─────────────────────────────────────────────────────────────
+    Shipper:
+      type: object
+      required: [id, name, email, status, created_at]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: ["string", "null"]
+        status:
+          $ref: "#/components/schemas/AccountStatus"
+        created_at:
+          type: string
+
+    ShipperListResponse:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Shipper"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    # ─── ShipperCustomer ─────────────────────────────────────────────────────
+    ShipperCustomer:
+      type: object
+      required: [id, shipper_id, name, created_at]
+      properties:
+        id:
+          type: string
+        shipper_id:
+          type: string
+        name:
+          type: string
+        phone:
+          type: ["string", "null"]
+        created_at:
+          type: string
+
+    ShipperCustomerInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          minLength: 2
+        phone:
+          type: ["string", "null"]
+
+    ShipperCustomerUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+        phone:
+          type: ["string", "null"]
+
+    # ─── Product ─────────────────────────────────────────────────────────────
+    Product:
+      type: object
+      required: [id, shipper_id, name, created_at]
+      properties:
+        id:
+          type: string
+        shipper_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: ["string", "null"]
+        created_at:
+          type: string
+
+    ProductInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          minLength: 2
+        description:
+          type: ["string", "null"]
+
+    ProductUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+        description:
+          type: ["string", "null"]
+
+    # ─── Shipment ────────────────────────────────────────────────────────────
+    Shipment:
+      type: object
+      required: [id, reference_number, pickup_location, dropoff_location, required_vehicle_type, required_vehicle_category, shipper_id, status, created_at]
+      properties:
+        id:
+          type: string
+        reference_number:
+          type: string
+        pickup_location:
+          type: string
+        dropoff_location:
+          type: string
+        cargo_description:
+          type: ["string", "null"]
+        required_vehicle_type:
+          $ref: "#/components/schemas/VehicleType"
+        required_vehicle_category:
+          $ref: "#/components/schemas/VehicleCategory"
+        shipper_id:
+          type: string
+        shipper_customer_id:
+          type: ["string", "null"]
+        product_id:
+          type: ["string", "null"]
+        carrier_id:
+          type: ["string", "null"]
+        driver_id:
+          type: ["string", "null"]
+        vehicle_id:
+          type: ["string", "null"]
+        quoted_price:
+          type: ["number", "null"]
+        currency:
+          type: string
+          default: SAR
+        distance_km:
+          type: ["number", "null"]
+        price_approved_at:
+          type: ["string", "null"]
+        status:
+          $ref: "#/components/schemas/ShipmentStatus"
+        created_at:
+          type: string
+
+    ShipmentDetail:
+      allOf:
+        - $ref: "#/components/schemas/Shipment"
+        - type: object
+          properties:
+            available_actions:
+              type: array
+              items:
+                type: string
+            shipper:
+              $ref: "#/components/schemas/Shipper"
+            carrier:
+              type: ["object", "null"]
+              $ref: "#/components/schemas/Carrier"
+            driver:
+              type: ["object", "null"]
+              $ref: "#/components/schemas/Driver"
+            vehicle:
+              type: ["object", "null"]
+              $ref: "#/components/schemas/Vehicle"
+            shipper_customer:
+              type: ["object", "null"]
+              $ref: "#/components/schemas/ShipperCustomer"
+            product:
+              type: ["object", "null"]
+              $ref: "#/components/schemas/Product"
+            waybill:
+              type: ["object", "null"]
+              $ref: "#/components/schemas/Waybill"
+
+    ShipmentListResponse:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Shipment"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    ShipmentInput:
+      type: object
+      required: [pickup_location, dropoff_location, required_vehicle_type, required_vehicle_category]
+      properties:
+        pickup_location:
+          type: string
+          minLength: 3
+        dropoff_location:
+          type: string
+          minLength: 3
+        cargo_description:
+          type: ["string", "null"]
+        required_vehicle_type:
+          $ref: "#/components/schemas/VehicleType"
+        required_vehicle_category:
+          $ref: "#/components/schemas/VehicleCategory"
+        shipper_customer_id:
+          type: ["string", "null"]
+        product_id:
+          type: ["string", "null"]
+
+    AssignCarrierInput:
+      type: object
+      required: [carrier_id, driver_id, vehicle_id]
+      properties:
+        carrier_id:
+          type: string
+        driver_id:
+          type: string
+        vehicle_id:
+          type: string
+
+    CancelShipmentInput:
+      type: object
+      properties:
+        reason:
+          type: ["string", "null"]
+
+    StatusChange:
+      type: object
+      required: [id, shipment_id, new_status, changed_by_role, created_at]
+      properties:
+        id:
+          type: string
+        shipment_id:
+          type: string
+        previous_status:
+          type: ["string", "null"]
+        new_status:
+          $ref: "#/components/schemas/ShipmentStatus"
+        changed_by_id:
+          type: string
+        changed_by_role:
+          $ref: "#/components/schemas/UserRole"
+        notes:
+          type: ["string", "null"]
+        created_at:
+          type: string
+
+    # ─── Waybill ─────────────────────────────────────────────────────────────
+    Waybill:
+      type: object
+      required: [id, shipment_id, waybill_number, issued_at, created_at]
+      properties:
+        id:
+          type: string
+        shipment_id:
+          type: string
+        waybill_number:
+          type: string
+        pdf_url:
+          type: ["string", "null"]
+        issued_at:
+          type: string
+        created_at:
+          type: string
+
+    # ─── Notification ────────────────────────────────────────────────────────
+    Notification:
+      type: object
+      required: [id, user_id, user_role, title, message, is_read, created_at]
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        user_role:
+          $ref: "#/components/schemas/UserRole"
+        title:
+          type: string
+        message:
+          type: string
+        related_shipment_id:
+          type: ["string", "null"]
+        is_read:
+          type: boolean
+        created_at:
+          type: string
+
+    NotificationListResponse:
+      type: object
+      required: [data, total, unread_count, page, limit]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Notification"
+        total:
+          type: integer
+        unread_count:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    # ─── Conversation ─────────────────────────────────────────────────────────
+    Conversation:
+      type: object
+      required: [id, created_at]
+      properties:
+        id:
+          type: string
+        shipment_id:
+          type: ["string", "null"]
+        last_message:
+          type: ["string", "null"]
+        created_at:
+          type: string
+
+    ConversationInput:
+      type: object
+      properties:
+        shipment_id:
+          type: ["string", "null"]
+        participant_ids:
+          type: array
+          items:
+            type: string
+
+    Message:
+      type: object
+      required: [id, conversation_id, sender_id, sender_role, content, created_at]
+      properties:
+        id:
+          type: string
+        conversation_id:
+          type: string
+        sender_id:
+          type: string
+        sender_role:
+          $ref: "#/components/schemas/UserRole"
+        content:
+          type: string
+        created_at:
+          type: string
+
+    MessageInput:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+          minLength: 1
+
+    # ─── Support Ticket ───────────────────────────────────────────────────────
+    SupportTicket:
+      type: object
+      required: [id, created_by_id, created_by_role, subject, status, created_at]
+      properties:
+        id:
+          type: string
+        created_by_id:
+          type: string
+        created_by_role:
+          $ref: "#/components/schemas/UserRole"
+        subject:
+          type: string
+        status:
+          $ref: "#/components/schemas/TicketStatus"
+        assigned_to_id:
+          type: ["string", "null"]
+        created_at:
+          type: string
+        updated_at:
+          type: string
+
+    SupportTicketDetail:
+      allOf:
+        - $ref: "#/components/schemas/SupportTicket"
+        - type: object
+          properties:
+            messages:
+              type: array
+              items:
+                $ref: "#/components/schemas/SupportMessage"
+
+    SupportTicketInput:
+      type: object
+      required: [subject, message]
+      properties:
+        subject:
+          type: string
+          minLength: 5
+        message:
+          type: string
+          minLength: 10
+
+    SupportTicketUpdate:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/TicketStatus"
+        assigned_to_id:
+          type: ["string", "null"]
+
+    SupportMessage:
+      type: object
+      required: [id, ticket_id, sender_id, sender_role, content, created_at]
+      properties:
+        id:
+          type: string
+        ticket_id:
+          type: string
+        sender_id:
+          type: string
+        sender_role:
+          $ref: "#/components/schemas/UserRole"
+        content:
+          type: string
+        created_at:
+          type: string
+
+    # ─── Dashboard ────────────────────────────────────────────────────────────
+    DashboardStats:
+      type: object
+      required: [shipments_by_status, pending_activations, recent_shipments]
+      properties:
+        shipments_by_status:
+          type: object
+          additionalProperties:
+            type: integer
+        pending_activations:
+          type: object
+          required: [carriers, shippers]
+          properties:
+            carriers:
+              type: integer
+            shippers:
+              type: integer
+        total_carriers:
+          type: integer
+        total_shippers:
+          type: integer
+        recent_shipments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Shipment"

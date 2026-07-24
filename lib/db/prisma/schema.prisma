@@ -1,0 +1,303 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Prisma Schema — SAS Platform
+// ORM: Prisma (replaces Drizzle)
+// DB:  PostgreSQL
+// ─────────────────────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum AccountStatus {
+  PENDING_ACTIVATION
+  ACTIVE
+  DISABLED
+}
+
+enum VehicleType {
+  FLATBED
+  REFRIGERATED
+  CAGE
+  TOW_TRUCK
+  CURTAIN_SIDE
+  CONTAINER
+  LOW_BED
+  OTHER
+}
+
+enum VehicleCategory {
+  DYNA
+  SINGLE_TRUCK
+  TRAILER
+  SEMI_TRAILER
+  ROAD_TRAIN
+  OTHER
+}
+
+enum ShipmentStatus {
+  REQUESTED
+  CARRIER_ASSIGNED
+  PRICING_CALCULATED
+  PRICING_SENT
+  PRICING_APPROVED
+  PRICING_REJECTED
+  WAYBILL_ISSUED
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+}
+
+enum UserRole {
+  ADMIN
+  CARRIER
+  SHIPPER
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+// ─── Models ───────────────────────────────────────────────────────────────────
+
+model Admin {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  firebase_uid String?  @unique
+  created_at   DateTime @default(now())
+
+  assigned_tickets SupportTicket[]
+}
+
+model Carrier {
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  firebase_uid String?       @unique
+  phone        String?
+  status       AccountStatus @default(PENDING_ACTIVATION)
+  created_at   DateTime      @default(now())
+
+  vehicles  Vehicle[]
+  drivers   Driver[]
+  shipments Shipment[]
+}
+
+model Vehicle {
+  id               String          @id @default(uuid())
+  carrier_id       String
+  carrier          Carrier         @relation(fields: [carrier_id], references: [id])
+  vehicle_type     VehicleType
+  vehicle_category VehicleCategory
+  plate_number     String?
+  created_at       DateTime        @default(now())
+
+  shipments Shipment[]
+
+  @@index([carrier_id])
+  @@index([vehicle_type, vehicle_category])
+}
+
+model Driver {
+  id           String        @id @default(uuid())
+  carrier_id   String
+  carrier      Carrier       @relation(fields: [carrier_id], references: [id])
+  name         String
+  phone        String?
+  firebase_uid String?       @unique
+  status       AccountStatus @default(ACTIVE)
+  created_at   DateTime      @default(now())
+
+  shipments Shipment[]
+
+  @@index([carrier_id])
+}
+
+model Shipper {
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  firebase_uid String?       @unique
+  phone        String?
+  status       AccountStatus @default(PENDING_ACTIVATION)
+  created_at   DateTime      @default(now())
+
+  customers ShipperCustomer[]
+  shipments Shipment[]
+  products  Product[]
+}
+
+model ShipperCustomer {
+  id         String   @id @default(uuid())
+  shipper_id String
+  shipper    Shipper  @relation(fields: [shipper_id], references: [id])
+  name       String
+  phone      String?
+  created_at DateTime @default(now())
+
+  shipments Shipment[]
+
+  @@index([shipper_id])
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  shipper_id  String
+  shipper     Shipper  @relation(fields: [shipper_id], references: [id])
+  name        String
+  description String?
+  created_at  DateTime @default(now())
+
+  shipments Shipment[]
+
+  @@index([shipper_id])
+}
+
+model Shipment {
+  id                        String          @id @default(uuid())
+  reference_number          String          @unique
+  pickup_location           String
+  dropoff_location          String
+  cargo_description         String?
+  required_vehicle_type     VehicleType
+  required_vehicle_category VehicleCategory
+  shipper_id                String
+  shipper                   Shipper         @relation(fields: [shipper_id], references: [id])
+  shipper_customer_id       String?
+  shipper_customer          ShipperCustomer? @relation(fields: [shipper_customer_id], references: [id])
+  product_id                String?
+  product                   Product?        @relation(fields: [product_id], references: [id])
+  carrier_id                String?
+  carrier                   Carrier?        @relation(fields: [carrier_id], references: [id])
+  driver_id                 String?
+  driver                    Driver?         @relation(fields: [driver_id], references: [id])
+  vehicle_id                String?
+  vehicle                   Vehicle?        @relation(fields: [vehicle_id], references: [id])
+  quoted_price              Decimal?        @db.Decimal(12, 2)
+  currency                  String          @default("SAR") @db.Char(3)
+  distance_km               Decimal?        @db.Decimal(10, 2)
+  price_approved_at         DateTime?
+  status                    ShipmentStatus  @default(REQUESTED)
+  created_at                DateTime        @default(now())
+
+  status_changes ShipmentStatusChange[]
+  notifications  Notification[]
+  waybill        Waybill?
+  conversations  Conversation[]
+
+  @@index([shipper_id])
+  @@index([carrier_id])
+  @@index([status])
+  @@index([required_vehicle_type, required_vehicle_category])
+}
+
+model ShipmentStatusChange {
+  id              String          @id @default(uuid())
+  shipment_id     String
+  shipment        Shipment        @relation(fields: [shipment_id], references: [id])
+  previous_status ShipmentStatus?
+  new_status      ShipmentStatus
+  changed_by_id   String
+  changed_by_role UserRole
+  notes           String?
+  ip_address      String?
+  created_at      DateTime        @default(now())
+
+  @@index([shipment_id])
+}
+
+model Waybill {
+  id             String   @id @default(uuid())
+  shipment_id    String   @unique
+  shipment       Shipment @relation(fields: [shipment_id], references: [id])
+  waybill_number String   @unique
+  pdf_url        String?
+  issued_at      DateTime @default(now())
+  created_at     DateTime @default(now())
+}
+
+model Notification {
+  id                  String    @id @default(uuid())
+  user_id             String
+  user_role           UserRole
+  title               String
+  message             String
+  related_shipment_id String?
+  shipment            Shipment? @relation(fields: [related_shipment_id], references: [id])
+  is_read             Boolean   @default(false)
+  created_at          DateTime  @default(now())
+
+  @@index([user_id, user_role])
+  @@index([related_shipment_id])
+}
+
+model Conversation {
+  id          String    @id @default(uuid())
+  shipment_id String?
+  shipment    Shipment? @relation(fields: [shipment_id], references: [id])
+  created_at  DateTime  @default(now())
+
+  participants ConversationParticipant[]
+  messages     Message[]
+
+  @@index([shipment_id])
+}
+
+model ConversationParticipant {
+  id              String       @id @default(uuid())
+  conversation_id String
+  conversation    Conversation @relation(fields: [conversation_id], references: [id])
+  user_id         String
+  user_role       UserRole
+  created_at      DateTime     @default(now())
+
+  @@index([conversation_id])
+}
+
+model Message {
+  id              String       @id @default(uuid())
+  conversation_id String
+  conversation    Conversation @relation(fields: [conversation_id], references: [id])
+  sender_id       String
+  sender_role     UserRole
+  content         String
+  created_at      DateTime     @default(now())
+
+  @@index([conversation_id])
+}
+
+model SupportTicket {
+  id              String       @id @default(uuid())
+  created_by_id   String
+  created_by_role UserRole
+  subject         String
+  status          TicketStatus @default(OPEN)
+  assigned_to_id  String?
+  admin           Admin?       @relation(fields: [assigned_to_id], references: [id])
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @updatedAt
+
+  messages SupportMessage[]
+}
+
+model SupportMessage {
+  id          String        @id @default(uuid())
+  ticket_id   String
+  ticket      SupportTicket @relation(fields: [ticket_id], references: [id])
+  sender_id   String
+  sender_role UserRole
+  content     String
+  created_at  DateTime      @default(now())
+
+  @@index([ticket_id])
+}

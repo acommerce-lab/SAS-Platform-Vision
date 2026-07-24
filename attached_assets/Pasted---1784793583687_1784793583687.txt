@@ -1,0 +1,229 @@
+أوافقك. هذا النوع من الحوارات يمكن أن يستهلك الرصيد دون إنتاج أي كود. المطلوب هو **تجميد جميع القرارات** ومنع الوكيل من فتح نقاشات جديدة إلا إذا كانت تمنع التنفيذ فعلاً.
+
+بل أرى أن بعض اعتراضاته غير صحيحة لأنه اعتمد على **حالة المشروع الحالية في Replit** وليس على الوثائق. الوثائق هي المرجع، وليست البيئة.
+
+أرسل له النص التالي كما هو:
+
+```text
+Architecture Freeze Decision
+Version 1.0
+
+This message is an authoritative architectural decision and overrides any previous assumptions, workspace contents or implementation artifacts.
+
+Proceed immediately after applying these decisions.
+
+──────────────────────────────────────
+
+1. Existing Workspace
+
+Ignore the current Replit implementation.
+
+The existing workspace is NOT the source of truth.
+
+It may contain legacy code, experiments or scaffolding.
+
+The attached documentation is the only source of truth.
+
+If existing code conflicts with the documentation, the documentation wins.
+
+You are authorized to delete, replace or refactor any existing code.
+
+──────────────────────────────────────
+
+2. ORM
+
+Final Decision
+
+Prisma ORM.
+
+Remove Drizzle completely.
+
+Do not keep compatibility layers.
+
+Do not mix ORMs.
+
+──────────────────────────────────────
+
+3. Backend Language
+
+Final Decision
+
+Node.js
+
+Express.js
+
+JavaScript ES2023
+
+Do not use TypeScript in the backend.
+
+Frontend remains React + TypeScript + Vite.
+
+──────────────────────────────────────
+
+4. Driver and Truck
+
+Final Decision
+
+Drivers and Trucks ARE INCLUDED in Version 1.
+
+Every Shipment MUST reference
+
+Carrier
+
+Driver
+
+Truck
+
+Business Analysis is superseded by the latest architectural decisions.
+
+Update your internal model accordingly.
+
+──────────────────────────────────────
+
+5. Workflow
+
+Final Decision
+
+Use the workflow defined in Workflow Specification.
+
+Official states are
+
+Requested
+
+CarrierAssigned
+
+PricingCalculated
+
+PricingSent
+
+PricingApproved
+
+WaybillIssued
+
+InTransit
+
+Delivered
+
+PricingRejected
+
+Cancelled
+
+Do not simplify the workflow.
+
+Do not merge workflow states.
+
+The Workflow Specification overrides earlier simplified documents.
+
+──────────────────────────────────────
+
+6. Firebase
+
+Proceed without Firebase credentials.
+
+Implement the complete integration.
+
+Read configuration from environment variables only.
+
+Never hardcode credentials.
+
+Never use placeholders.
+
+Never invent values.
+
+If credentials are unavailable, implementation must remain production-ready and fail gracefully until real environment variables are provided.
+
+This must not block development.
+
+──────────────────────────────────────
+
+7. Vehicle Types
+
+Use the following official values.
+
+vehicle_type
+
+Flatbed
+
+Refrigerated
+
+Cage
+
+Tow Truck
+
+Curtain Side
+
+Container
+
+Low Bed
+
+Other
+
+vehicle_category
+
+Dyna
+
+Single Truck
+
+Trailer
+
+Semi Trailer
+
+Road Train
+
+Other
+
+These values may be extended later through seed data.
+
+──────────────────────────────────────
+
+8. No More Architecture Discussions
+
+The architecture is now frozen.
+
+Do not reopen architectural discussions.
+
+Do not ask for confirmation unless implementation becomes technically impossible.
+
+If documentation conflicts exist, apply the latest Architecture Decisions and continue.
+
+──────────────────────────────────────
+
+9. Implementation Policy
+
+Begin implementation immediately.
+
+Follow the approved implementation roadmap.
+
+Implement one phase at a time.
+
+After each completed phase provide:
+
+• Summary
+• Files created
+• Files modified
+• Database changes
+• APIs implemented
+• Tests added
+
+Then stop and wait for approval.
+
+No further architecture validation is required.
+
+Begin Phase 1 immediately.
+```
+
+## لدي ملاحظة واحدة فقط على رده
+
+هناك نقطة أخطأ فيها:
+
+هو قال:
+
+> **Business Analysis أعلى من ADR**
+
+وهذا **غير صحيح** إذا كانت وثيقة ADR هي النسخة الأحدث التي حسمت القرار.
+
+لذلك أقترح تعديل بسيط في جميع وثائقك المستقبلية، وهو إضافة عبارة في بداية **ADR.md**:
+
+> **This document contains the final architectural decisions. Whenever an ADR conflicts with an earlier document, the ADR takes precedence regardless of document priority or publication date.**
+
+هذه الجملة وحدها ستمنع 90% من هذه النقاشات مع أي وكيل ذكاء اصطناعي في المستقبل.

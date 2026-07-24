@@ -70,8 +70,14 @@ autoInstallPeers: false
 
 onlyBuiltDependencies:
   - '@swc/core'
+  - '@prisma/client'
+  - '@prisma/engines'
+  - '@firebase/util'
   - esbuild
   - msw
+  - prisma
+  - protobufjs
+  - puppeteer
   - unrs-resolver
 
 overrides:
