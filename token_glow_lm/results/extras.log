@@ -1,0 +1,17 @@
+[  145.2s] KN fitted
+[  329.7s] semantic graph rebuilt
+[  506.6s] valid: baseline log-probs and cluster masses ready
+[  694.8s] test: baseline log-probs and cluster masses ready
+[  813.5s] direct glow: rho=0.97 beta=3.0 valid 130.61 test 133.47
+[  813.5s] direct glow + table: kappa=-2.0 valid 101.91 test 103.36
+[  813.7s] bootstrap static vs KN: ratio 0.9947 CI95 [0.9927, 0.9971] p(not better)=0.000
+[  813.7s] bootstrap glow vs static: ratio 0.9994 CI95 [0.9992, 0.9996] p(not better)=0.000
+[  813.7s] bootstrap glow vs KN: ratio 0.9941 CI95 [0.9920, 0.9965] p(not better)=0.000
+[  813.7s] bootstrap direct vs KN: ratio 0.8945 CI95 [0.8835, 0.9043] p(not better)=0.000
+[  813.7s] bootstrap direct vs glow: ratio 0.8999 CI95 [0.8887, 0.9100] p(not better)=0.000
+[  813.7s] bootstrap glow+table vs KN: ratio 0.7480 CI95 [0.7152, 0.7782] p(not better)=0.000
+[  813.7s] bootstrap glow+table vs glow: ratio 0.7525 CI95 [0.7197, 0.7828] p(not better)=0.000
+[  813.7s] bootstrap direct+table vs glow+table: ratio 0.9261 CI95 [0.9180, 0.9362] p(not better)=0.000
+[  885.6s] cloze KN: left acc@1 0.086 acc@10 0.225 mrr 0.134 | bidir acc@1 0.261 acc@10 0.490 mrr 0.337
+[  885.6s] cloze direct glow: left acc@1 0.107 acc@10 0.249 mrr 0.156 | bidir acc@1 0.273 acc@10 0.507 mrr 0.349
+[  885.6s] done

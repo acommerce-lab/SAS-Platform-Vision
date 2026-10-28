@@ -42,6 +42,7 @@ induction-head-like mechanism) and is reported separately.
 | `tglm/model.py` | the glow model: routes, glow state, in-context table, vectorised and dense scoring, generation |
 | `tglm/evaluate.py` | hyper-parameter tuning, cloze test, generation metrics, synthetic induction test |
 | `run_experiments.py` | end-to-end experiment; writes `results/results.json` and `results/report.md` |
+| `run_extras.py` | direct glow field on all candidates, paired article bootstraps; writes `results/extras.md` and `results/extras.json` |
 | `tests/test_small.py` | sanity tests (distributions sum to one, vectorised == dense scoring, clusters follow topics) |
 
 ## Running
@@ -49,7 +50,8 @@ induction-head-like mechanism) and is reported separately.
 ```
 pip install -r requirements.txt
 python3 tests/test_small.py
-python3 run_experiments.py                      # full WikiText-103 (≈15 GB RAM, ~1 h on 4 cores)
+python3 run_experiments.py                      # full WikiText-103 (≈10 GB RAM, ~15 min on 4 cores)
+python3 run_extras.py                           # direct-field variant + significance tests (~15 min)
 python3 run_experiments.py --max-train-tokens 3000000 --M 8000 --kcl 100 --dim 64 --cloze-n 200   # quick run
 ```
 
@@ -130,10 +132,9 @@ the semantic routes off.
    upstream, …`; `said → stated, commented, …`) with the substitution route give 149.21 → 148.42 (−0.5 %). This
    is the similarity-based smoothing of Dagan, Lee & Pereira (1999); its size is in line with that literature
    once the baseline is well smoothed.
-3. **Glow centres add 0.1 PPL on top (0.07 %).** The field can only act through the semantic routes, which carry
-   under 3 % of the probability mass, so it has almost no leverage. The effect is too small to be separated
-   from noise without a paired test (see `run_extras.py`, which also evaluates a variant where the field acts
-   directly on all candidates).
+3. **Glow centres acting through the semantic routes add 0.1 PPL (0.06 %).** The paired article bootstrap
+   (below) shows the effect is real (PPL ratio 0.9994, 95 % CI 0.9992–0.9996) but negligible: the field can only
+   act through routes that carry under 3 % of the probability mass, so it has almost no leverage.
 4. **An ordered in-context memory is what moves the needle.** Recording what followed each token earlier in the
    same document (the extension proposed in the discussion, an induction-head-like mechanism) cuts perplexity
    by 25 %, raises cloze accuracy by 40 % relative, and solves the synthetic induction test that every
@@ -143,6 +144,35 @@ the semantic routes off.
 5. Generation: the semantic routes and glow did not change topical coherence with the prompt within the noise of
    8 prompts; the in-context table raised it, at the cost of copying 10 % of its content words from the prompt
    and a small amount of 4-gram repetition. Samples are in `results/report.md`.
+
+### Extras: the field acting directly on all candidates, and significance tests
+
+`run_extras.py` (results in `results/extras.md`, `results/extras.json`) evaluates a variant in which the glow field
+is applied to **every** candidate instead of only to the semantic children:
+`P'(x | h) ∝ P_KN(x | h) · exp(beta · u[cl(x)])`, normalised exactly through the per-cluster mass of the
+Kneser-Ney distribution. This is the same accumulated attraction/repulsion field, with the semantic-child
+routing removed.
+
+| model | test PPL | PPL ratio vs KN trigram (95 % CI, paired bootstrap over 63 test articles) |
+|---|---|---|
+| Kneser-Ney trigram | 149.21 | – |
+| static semantic routes | 148.42 | 0.9947 (0.9927–0.9971) |
+| glow via semantic routes (original design) | 148.32 | 0.9941 (0.9920–0.9965) |
+| **direct glow field on all candidates** (`rho = 0.97`, `beta = 3`) | **133.47** | **0.8945 (0.8835–0.9043)** |
+| glow via routes + in-context successor table | 111.61 | 0.7480 (0.7152–0.7782) |
+| **direct glow field + in-context successor table** (`kappa = −2`) | **103.36** | 0.6927 |
+
+Cloze with the direct field: left acc@1 0.086 → **0.107**, left MRR 0.134 → **0.156**, bidirectional acc@1
+0.261 → 0.273 (same 2,000 blanks).
+
+Reading: the glow centres themselves carry real signal. A decayed, cluster-level activation of the document so far,
+turned into attraction and repulsion by the cluster PMI matrix, lowers perplexity by 10.6 % and raises cloze
+accuracy by a quarter when it is allowed to act on all candidates. Routing it exclusively through
+"semantic child → its contextual child", as the original design does, throws that signal away because the
+semantic children's successor distributions are poor and the tuned tax keeps those routes almost closed. In the
+literature this direct variant is a topic- or cache-adapted n-gram model (Kuhn & De Mori 1990; Gildea & Hofmann
+1999); the ordered in-context table adds a further, larger gain on top, and the two are complementary (−31 %
+together).
 
 Caveats: a trigram baseline is weaker than a 4- or 5-gram; the glow field has one scalar per cluster; the
 semantic relations are static corpus statistics; no parameter is learned by gradient descent. These are
