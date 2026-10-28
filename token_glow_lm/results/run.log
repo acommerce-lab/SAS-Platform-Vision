@@ -1,0 +1,35 @@
+[    2.5s] data: V=267735 train=103227021 valid=217646 test=245569 articles(test)=62
+[  141.4s] KN-3 fitted; table sizes 2:11040793, 3:40790054
+[  141.6s] KN-2: valid ppl 257.71  test ppl 261.53
+[  142.0s] KN-3: valid ppl 145.62  test ppl 149.21
+[  202.8s] co-occurrence: M=30000 window=5 nnz=63107296
+[  210.8s] PPMI nnz=39416477
+[  305.7s] SVD done
+[  323.9s] clusters: k=500, affinity range [-4.00, 4.00]
+[  323.9s] 'king': cooc=[('crowned', 4.02), ('Chola', 3.91), ('Angles', 3.82), ('vulture', 3.66), ('queen', 3.62), ('Picts', 3.47), ('Copán', 3.43), ('overlord', 3.37)]  distrib=[('throne', 0.76), ('kings', 0.75), ('King', 0.73), ('overlord', 0.72), ('kingship', 0.72), ('kingdom', 0.7), ('Æthelred', 0.7), ('overlordship', 0.68)]
+[  323.9s] 'river': cooc=[('otter', 4.38), ('valleys', 4.17), ('otters', 4.12), ('banks', 3.96), ('navigable', 3.93), ('martin', 3.93), ('bend', 3.91), ('bank', 3.76)]  distrib=[('rivers', 0.85), ('upstream', 0.83), ('downstream', 0.82), ('creek', 0.8), ('River', 0.8), ('stream', 0.79), ('navigable', 0.79), ('Parrett', 0.78)]
+[  323.9s] 'football': cooc=[('FBS', 4.47), ('Wolverines', 4.23), ('college', 4.1), ('tier', 4.01), ('association', 3.79), ('varsity', 3.74), ('professional', 3.73), ('soccer', 3.69)]  distrib=[('soccer', 0.81), ('rugby', 0.8), ('basketball', 0.78), ('lacrosse', 0.77), ('varsity', 0.77), ('collegiate', 0.73), ('teams', 0.73), ('athletics', 0.73)]
+[  323.9s] 'the': cooc=[('of', 1.68), (',', 1.29), ('in', 1.23), ('to', 1.19), ('.', 1.17), ('and', 1.1), ('end', 1.07), ('on', 0.98)]  distrib=[('of', 0.7), ('and', 0.64), ('.', 0.61), ('end', 0.59), ('time', 0.56), ('first', 0.54), ('The', 0.53), (',', 0.52)]
+[  323.9s] 'doctor': cooc=[('Mengele', 4.18), ('dentist', 4.08), ('prescription', 3.97), ('witch', 3.89), ('medical', 3.86), ('diagnosed', 3.72), ('prescribed', 3.69), ('Fenton', 3.5)]  distrib=[('doctors', 0.76), ('hospital', 0.73), ('surgeon', 0.71), ('physician', 0.71), ('patient', 0.68), ('nurse', 0.68), ('psychiatrist', 0.67), ('clinic', 0.66)]
+[  323.9s] 'music': cooc=[('Musicnotes.com', 4.06), ('video', 3.86), ('accompanying', 3.82), ('videos', 3.79), ('incidental', 3.78), ('sheet', 3.58), ('critics', 3.33), ('classical', 3.31)]  distrib=[('musical', 0.75), ('jazz', 0.74), ('electronica', 0.73), ('orchestral', 0.71), ('influences', 0.69), ('techno', 0.69), ('symphonic', 0.68), ('pop', 0.68)]
+[  323.9s] 'war': cooc=[('civil', 3.77), ('waged', 3.44), ('crimes', 3.44), ('prisoner', 3.41), ('prisoners', 3.34), ('outbreak', 3.29), ('declaration', 3.21), ('post', 3.11)]  distrib=[('War', 0.75), ('hostilities', 0.73), ('occupation', 0.66), ('wars', 0.65), ('armistice', 0.62), ('Armistice', 0.62), ('outbreak', 0.6), ('conflict', 0.6)]
+[  323.9s] 'said': cooc=[('Schur', 3.04), ('spokesman', 2.7), ('interview', 2.69), ('"', 2.55), ('that', 2.51), ('he', 2.34), ('spokesperson', 2.28), ('We', 2.28)]  distrib=[('stated', 0.91), ('commented', 0.87), ('remarked', 0.83), ('joked', 0.77), ('felt', 0.77), ('opined', 0.75), ('explained', 0.74), ('told', 0.73)]
+[  358.1s] glow fields computed
+[  399.8s] cooc/bigram: static tau=10.0 valid 145.59 test 149.15 mass 0.002 | glow tau=10.0 beta=2.0 rho=0.97 valid 145.55 test 149.11 mass 0.003
+[  448.1s] cooc/sub: static tau=10.0 valid 145.51 test 149.05 mass 0.002 | glow tau=10.0 beta=2.0 rho=0.9 valid 145.44 test 149.00 mass 0.004
+[  491.4s] distrib/bigram: static tau=8.0 valid 145.47 test 149.02 mass 0.004 | glow tau=8.0 beta=2.0 rho=0.97 valid 145.41 test 148.95 mass 0.005
+[  539.9s] distrib/sub: static tau=6.0 valid 144.91 test 148.42 mass 0.028 | glow tau=6.0 beta=1.0 rho=0.997 valid 144.84 test 148.32 mass 0.028
+[  539.9s] best glow configuration: {'key': 'distrib/sub', 'family': 'glow', 'tau': 6.0, 'beta': 1.0, 'rho': 0.997, 'ppl': 144.83667005493436}
+[  543.2s] glow + in-context successor table: kappa=-1.0 decay=0.999 valid 110.47 test 111.61
+[  738.9s] cloze KN-3: left acc@1 0.086 acc@10 0.225 mrr 0.134 | bidir acc@1 0.261 acc@10 0.490 mrr 0.337
+[  738.9s] cloze static semantic: left acc@1 0.086 acc@10 0.223 mrr 0.134 | bidir acc@1 0.259 acc@10 0.491 mrr 0.336
+[  738.9s] cloze glow: left acc@1 0.086 acc@10 0.224 mrr 0.134 | bidir acc@1 0.259 acc@10 0.490 mrr 0.337
+[  738.9s] cloze glow + induction table: left acc@1 0.121 acc@10 0.291 mrr 0.179 | bidir acc@1 0.292 acc@10 0.532 mrr 0.373
+[  774.1s] gen KN-3: distinct1 0.492 distinct2 0.869 rep4 0.000 copy 0.000 coherence 0.105
+[  774.1s] gen glow: distinct1 0.465 distinct2 0.871 rep4 0.000 copy 0.000 coherence 0.092
+[  774.1s] gen glow + induction table: distinct1 0.456 distinct2 0.797 rep4 0.026 copy 0.098 coherence 0.139
+[  789.4s] induction KN-3: ppl first 265910.1 second 265910.1 acc second 0.000
+[  789.4s] induction static semantic: ppl first 263040.4 second 263040.5 acc second 0.000
+[  789.4s] induction glow: ppl first 262186.6 second 263013.3 acc second 0.000
+[  789.4s] induction glow + induction table: ppl first 262186.6 second 3.8 acc second 0.976
+[  789.4s] done

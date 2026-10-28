@@ -95,6 +95,11 @@ def cloze_eval(model: GlowLM, ids: np.ndarray, starts, positions: np.ndarray, co
                     if p_kn is None:
                         p_kn = kn.dist(N, kn.history_from_context(context, N))
                     P = p_kn
+                    if c.get("direct"):
+                        u = glows[c["rho"]].field()
+                        cl = model.sem.cluster
+                        P = p_kn * np.exp(c["beta"] * np.where(cl >= 0, u[np.maximum(cl, 0)], 0.0))
+                        P = P / P.sum()
                 else:
                     P = model.full_dist(context, glows.get(c.get("rho")), c["tau"], c.get("beta", 0.0),
                                         tables.get(c.get("decay")) if c.get("kappa") is not None else None, c.get("kappa"))
