@@ -1,0 +1,7 @@
+[   24.2s] train_tokens=1000000 ppl_kn2=618.6 ppl_kn3=549.7 ppl_kn4=539.3 seen_hist_len1=1 seen_hist_len2=0.6414 seen_hist_len3=0.2734 ppl_kn3_seen_trigram_hist=511.5 ppl_kn3_unseen_trigram_hist=625.2 unique_bigrams=384914 unique_trigrams=741834 unique_4grams=902014
+[   27.0s] train_tokens=3000000 ppl_kn2=465.7 ppl_kn3=384.9 ppl_kn4=373.6 seen_hist_len1=1 seen_hist_len2=0.7378 seen_hist_len3=0.3682 ppl_kn3_seen_trigram_hist=357.3 ppl_kn3_unseen_trigram_hist=474.4 unique_bigrams=913317 unique_trigrams=2023095 unique_4grams=2616378
+[   39.0s] train_tokens=10000000 ppl_kn2=370 ppl_kn3=278.9 ppl_kn4=264.8 seen_hist_len1=1 seen_hist_len2=0.8196 seen_hist_len3=0.472 ppl_kn3_seen_trigram_hist=263.2 ppl_kn3_unseen_trigram_hist=362.6 unique_bigrams=2234155 unique_trigrams=5852018 unique_4grams=8215610
+[   78.6s] train_tokens=30000000 ppl_kn2=305.7 ppl_kn3=203.6 ppl_kn4=184.2 seen_hist_len1=1 seen_hist_len2=0.8818 seen_hist_len3=0.5766 ppl_kn3_seen_trigram_hist=195 ppl_kn3_unseen_trigram_hist=280.9 unique_bigrams=4855901 unique_trigrams=14927297 unique_4grams=22852469
+[  243.5s] train_tokens=103227021 ppl_kn2=261.5 ppl_kn3=149.2 ppl_kn4=123.1 seen_hist_len1=1 seen_hist_len2=0.9311 seen_hist_len3=0.6882 ppl_kn3_seen_trigram_hist=144.9 ppl_kn3_unseen_trigram_hist=222.3 unique_bigrams=11040793 unique_trigrams=40790054 unique_4grams=69457980
+[  454.0s] seen histories (full data): {2: 0.931127019807141, 3: 0.6882452111024238, 4: 0.4120976674485275, 5: 0.23902951524628616, 6: 0.15774449439666405}
+[  454.1s] done

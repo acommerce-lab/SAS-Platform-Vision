@@ -1,0 +1,88 @@
+{
+ "rows": [
+  {
+   "train_tokens": 1000000,
+   "ppl_kn2": 618.5670090361479,
+   "ppl_kn3": 549.6669883466357,
+   "ppl_kn4": 539.3398041434034,
+   "seen_hist_len1": 0.9999959278247662,
+   "seen_hist_len2": 0.6414449706599774,
+   "seen_hist_len3": 0.2734139895507984,
+   "ppl_kn3_seen_trigram_hist": 511.47831321815914,
+   "ppl_kn3_unseen_trigram_hist": 625.2377098510326,
+   "unique_bigrams": 384914,
+   "unique_trigrams": 741834,
+   "unique_4grams": 902014
+  },
+  {
+   "train_tokens": 3000000,
+   "ppl_kn2": 465.7323418228097,
+   "ppl_kn3": 384.8743072011399,
+   "ppl_kn4": 373.55383384591534,
+   "seen_hist_len1": 0.9999959278247662,
+   "seen_hist_len2": 0.7377682036413391,
+   "seen_hist_len3": 0.3682183011699359,
+   "ppl_kn3_seen_trigram_hist": 357.2922689904229,
+   "ppl_kn3_unseen_trigram_hist": 474.4376748062021,
+   "unique_bigrams": 913317,
+   "unique_trigrams": 2023095,
+   "unique_4grams": 2616378
+  },
+  {
+   "train_tokens": 10000000,
+   "ppl_kn2": 370.0044398740002,
+   "ppl_kn3": 278.8834324853422,
+   "ppl_kn4": 264.8298294914041,
+   "seen_hist_len1": 0.9999959278247662,
+   "seen_hist_len2": 0.8196311423673184,
+   "seen_hist_len3": 0.47204655310727334,
+   "ppl_kn3_seen_trigram_hist": 263.23024264076275,
+   "ppl_kn3_unseen_trigram_hist": 362.5956627482493,
+   "unique_bigrams": 2234155,
+   "unique_trigrams": 5852018,
+   "unique_4grams": 8215610
+  },
+  {
+   "train_tokens": 30000000,
+   "ppl_kn2": 305.6511096708084,
+   "ppl_kn3": 203.60748686882442,
+   "ppl_kn4": 184.1593803252926,
+   "seen_hist_len1": 0.9999959278247662,
+   "seen_hist_len2": 0.8818376912395294,
+   "seen_hist_len3": 0.5766159409371704,
+   "ppl_kn3_seen_trigram_hist": 195.0188097530723,
+   "ppl_kn3_unseen_trigram_hist": 280.8531589862543,
+   "unique_bigrams": 4855901,
+   "unique_trigrams": 14927297,
+   "unique_4grams": 22852469
+  },
+  {
+   "train_tokens": 103227021,
+   "ppl_kn2": 261.53277673460184,
+   "ppl_kn3": 149.2069111692826,
+   "ppl_kn4": 123.12252648967362,
+   "seen_hist_len1": 0.9999959278247662,
+   "seen_hist_len2": 0.9311232280947513,
+   "seen_hist_len3": 0.6882424084473203,
+   "ppl_kn3_seen_trigram_hist": 144.86838861564527,
+   "ppl_kn3_unseen_trigram_hist": 222.3489359245654,
+   "unique_bigrams": 11040793,
+   "unique_trigrams": 40790054,
+   "unique_4grams": 69457980
+  }
+ ],
+ "seen_history_full_data": {
+  "2": 0.931127019807141,
+  "3": 0.6882452111024238,
+  "4": 0.4120976674485275,
+  "5": 0.23902951524628616,
+  "6": 0.15774449439666405
+ },
+ "loglog_slope_kn4": -0.3162619589264676,
+ "naive_extrapolation_kn4": {
+  "1e+09": 60.533678206388764,
+  "1e+10": 29.22369353322451,
+  "1e+11": 14.108249969744811,
+  "1e+12": 6.811004809590988
+ }
+}
