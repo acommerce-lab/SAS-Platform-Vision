@@ -110,7 +110,10 @@ class KNLM:
         """For each position i and order n, the index of the (n-1)-gram ending at i-1.
 
         Returns ``hist[n][i]`` (-1 when the history is unseen or too short), which
-        is exactly what :meth:`prob` needs to score ``ids[i]`` at order ``n``.
+        is exactly what :meth:`prob` needs to score ``ids[i]`` at order ``n``.  For
+        ``n == 2`` the history index is the previous token id itself, so it is never
+        -1 for a seen-or-unseen token; :meth:`prob` handles tokens absent from the
+        training data through their zero history total.
         """
         top = top or self.N
         ids = np.asarray(ids, dtype=np.int64)

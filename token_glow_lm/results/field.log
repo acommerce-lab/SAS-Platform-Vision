@@ -1,0 +1,41 @@
+[  122.6s] KN-4 fitted
+[  271.4s] clusters rebuilt
+[  276.2s] cluster masses ready
+[  296.8s] self field grid done for rho=0.99
+[  311.2s] self field grid done for rho=0.997
+[  326.1s] self field grid done for rho=0.999
+[  340.6s] self field grid done for rho=0.9997
+[  355.6s] self field grid done for rho=1.0
+[  363.8s] F1 self field KN-3: {'rho': 0.997, 'beta': 1.0, 'valid_ppl': 119.61975833471244, 'test_ppl': 120.98021218098455, 'edge': False}
+[  371.4s] F1 self field KN-4: {'rho': 0.997, 'beta': 0.75, 'valid_ppl': 102.10623196368144, 'test_ppl': 102.08889383976654, 'edge': False}
+[  470.4s] F2 self + cross-cluster forces KN-3: {'lam': 2.0, 'rho_cross': 0.97, 'beta': 0.75, 'valid_ppl': 117.97369345637424, 'test_ppl': 119.589056020268, 'edge': False}
+[  569.2s] F2 self + cross-cluster forces KN-4: {'lam': 1.0, 'rho_cross': 0.97, 'beta': 0.75, 'valid_ppl': 101.0582070236004, 'test_ppl': 101.01308074355282, 'edge': False}
+[  630.6s] F3 self field on random clusters KN-3: {'rho': 0.997, 'beta': 0.75, 'valid_ppl': 133.59176504246727, 'test_ppl': 135.57093826528907}
+[  630.7s] F4 KN-3 + unigram cache: test 114.32
+[  631.9s] F4 KN-3 + unigram cache + successor table: test 96.98
+[  632.0s] F4 KN-3 + self field + unigram cache: test 103.01
+[  633.2s] F4 KN-3 + self field + unigram cache + successor table: test 90.61
+[  633.3s] F4 KN-3 + self field + cross-cluster forces + unigram cache: test 100.86
+[  634.3s] F4 KN-3 + self field + cross-cluster forces + unigram cache + successor table: test 88.53
+[  634.4s] F4 KN-4 + unigram cache: test 95.15
+[  635.6s] F4 KN-4 + unigram cache + successor table: test 82.85
+[  635.6s] F4 KN-4 + self field + unigram cache: test 85.98
+[  636.8s] F4 KN-4 + self field + unigram cache + successor table: test 75.96
+[  636.9s] F4 KN-4 + self field + cross-cluster forces + unigram cache: test 85.27
+[  638.1s] F4 KN-4 + self field + cross-cluster forces + unigram cache + successor table: test 75.38
+[  638.4s] bootstrap KN-3 | self field vs KN: ratio 0.8108 [0.8008, 0.8212]
+[  638.4s] bootstrap KN-3 | adding cross-cluster forces to the self field: ratio 0.9885 [0.9862, 0.9907]
+[  638.4s] bootstrap KN-3 | adding the self field to the unigram cache: ratio 0.9010 [0.8904, 0.9106]
+[  638.4s] bootstrap KN-3 | adding the unigram cache to the self field: ratio 0.8515 [0.8291, 0.8738]
+[  638.4s] bootstrap KN-3 | adding the self field to both caches: ratio 0.9344 [0.9232, 0.9461]
+[  638.4s] bootstrap KN-3 | adding the successor table to self field + unigram cache (value of order): ratio 0.8797 [0.8610, 0.8948]
+[  638.4s] bootstrap KN-4 | self field vs KN: ratio 0.8292 [0.8204, 0.8382]
+[  638.4s] bootstrap KN-4 | adding cross-cluster forces to the self field: ratio 0.9895 [0.9882, 0.9907]
+[  638.4s] bootstrap KN-4 | adding the self field to the unigram cache: ratio 0.9036 [0.8958, 0.9101]
+[  638.4s] bootstrap KN-4 | adding the unigram cache to the self field: ratio 0.8422 [0.8195, 0.8678]
+[  638.4s] bootstrap KN-4 | adding the self field to both caches: ratio 0.9168 [0.9103, 0.9229]
+[  638.4s] bootstrap KN-4 | adding the successor table to self field + unigram cache (value of order): ratio 0.8835 [0.8642, 0.8980]
+[  638.4s] bootstrap KN-3 | self field: semantic clusters vs random clusters: ratio 0.8924 [0.8852, 0.8992]
+[  638.4s] bootstrap KN-3 | random-cluster self field vs KN: ratio 0.9086 [0.8988, 0.9182]
+[  642.3s] cloze: {'KN-3': {'acc@1': 0.0865, 'acc@10': 0.2245, 'mrr': 0.13426744606682406, 'n': 2000}, 'KN-3 + self field': {'acc@1': 0.1145, 'acc@10': 0.271, 'mrr': 0.17028087949414228, 'n': 2000}, 'mrr_diff': {'diff': 0.03601343342731823, 'ci95': [0.028486502465765885, 0.043895068498232]}}
+[  642.3s] done

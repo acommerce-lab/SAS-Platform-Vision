@@ -13,11 +13,13 @@ Next-token distribution at position i (t = previous token, h = n-gram history):
     extension         same document), weight exp(kappa)
 
     P(x) = [ P_KN(x|h) + sum_s omega_s Q_s(x) + e^kappa Q_ind(x) ] / [ 1 + sum_s omega_s + e^kappa ]
+    (the e^kappa terms are present only when t has already occurred in the document)
 
 All routes are proper distributions, so P is proper and the normaliser is
 O(K) per position.  tau is the transition tax, beta the glow gain; with
-beta = 0 the model reduces to similarity-based smoothing (Dagan, Lee & Pereira
-1999) and with tau -> inf to plain Kneser-Ney.
+beta = 0 the model has the form of the similarity-weighted estimate of Dagan,
+Lee & Pereira (1999), applied as a mixture at every position rather than only to
+unseen bigrams, and with tau -> inf it is plain Kneser-Ney.
 """
 from __future__ import annotations
 

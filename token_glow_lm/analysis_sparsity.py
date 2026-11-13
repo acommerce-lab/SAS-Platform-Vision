@@ -26,7 +26,7 @@ def log(m):
 
 
 def seen_long_histories(train: np.ndarray, test: np.ndarray, V: int, max_len: int) -> dict[int, float]:
-    """Share of test positions whose preceding n tokens (n = 4..max_len) occur as a sequence in training."""
+    """Share of test positions whose preceding n tokens (n = 2..max_len) occur as a sequence in training."""
     train = train.astype(np.int64); test = test.astype(np.int64)
     out = {}
     prev_tr = train.copy()                       # index of the n-gram ending at each training position

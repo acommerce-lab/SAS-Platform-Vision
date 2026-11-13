@@ -1,0 +1,630 @@
+{
+ "args": {
+  "data_dir": "/home/user/SAS-Platform-Vision/token_glow_lm/data/wikitext-103-v1",
+  "out_dir": "results",
+  "max_train_tokens": null,
+  "max_eval_tokens": null,
+  "M": 30000,
+  "window": 5,
+  "kcl": 500,
+  "dim": 200,
+  "procs": 4,
+  "bootstrap": 2000,
+  "cloze_n": 2000,
+  "seed": 0
+ },
+ "self_field": {
+  "KN-3": {
+   "rho": 0.997,
+   "beta": 1.0,
+   "valid_ppl": 119.61975833471244,
+   "test_ppl": 120.98021218098455,
+   "edge": false
+  },
+  "KN-4": {
+   "rho": 0.997,
+   "beta": 0.75,
+   "valid_ppl": 102.10623196368144,
+   "test_ppl": 102.08889383976654,
+   "edge": false
+  }
+ },
+ "self_field_grid": {
+  "KN-3": [
+   {
+    "rho": 0.99,
+    "beta": 0.5,
+    "valid_ppl": 124.47174348357649
+   },
+   {
+    "rho": 0.99,
+    "beta": 0.75,
+    "valid_ppl": 121.36886785209319
+   },
+   {
+    "rho": 0.99,
+    "beta": 1.0,
+    "valid_ppl": 124.06771929042345
+   },
+   {
+    "rho": 0.99,
+    "beta": 1.25,
+    "valid_ppl": 134.25245263732776
+   },
+   {
+    "rho": 0.99,
+    "beta": 1.5,
+    "valid_ppl": 155.181275150907
+   },
+   {
+    "rho": 0.99,
+    "beta": 2.0,
+    "valid_ppl": 258.824357785171
+   },
+   {
+    "rho": 0.997,
+    "beta": 0.5,
+    "valid_ppl": 124.53707249989777
+   },
+   {
+    "rho": 0.997,
+    "beta": 0.75,
+    "valid_ppl": 119.913021985872
+   },
+   {
+    "rho": 0.997,
+    "beta": 1.0,
+    "valid_ppl": 119.61975833471244
+   },
+   {
+    "rho": 0.997,
+    "beta": 1.25,
+    "valid_ppl": 124.5789347032534
+   },
+   {
+    "rho": 0.997,
+    "beta": 1.5,
+    "valid_ppl": 136.58644560698679
+   },
+   {
+    "rho": 0.997,
+    "beta": 2.0,
+    "valid_ppl": 197.4683522496838
+   },
+   {
+    "rho": 0.999,
+    "beta": 0.5,
+    "valid_ppl": 125.56591638160022
+   },
+   {
+    "rho": 0.999,
+    "beta": 0.75,
+    "valid_ppl": 120.74565383784078
+   },
+   {
+    "rho": 0.999,
+    "beta": 1.0,
+    "valid_ppl": 119.74436807158267
+   },
+   {
+    "rho": 0.999,
+    "beta": 1.25,
+    "valid_ppl": 123.34307416347525
+   },
+   {
+    "rho": 0.999,
+    "beta": 1.5,
+    "valid_ppl": 133.03937809753725
+   },
+   {
+    "rho": 0.999,
+    "beta": 2.0,
+    "valid_ppl": 183.58932338974316
+   },
+   {
+    "rho": 0.9997,
+    "beta": 0.5,
+    "valid_ppl": 126.40307846735898
+   },
+   {
+    "rho": 0.9997,
+    "beta": 0.75,
+    "valid_ppl": 121.7267857048705
+   },
+   {
+    "rho": 0.9997,
+    "beta": 1.0,
+    "valid_ppl": 120.71187460459015
+   },
+   {
+    "rho": 0.9997,
+    "beta": 1.25,
+    "valid_ppl": 124.1350963514038
+   },
+   {
+    "rho": 0.9997,
+    "beta": 1.5,
+    "valid_ppl": 133.46574809609606
+   },
+   {
+    "rho": 0.9997,
+    "beta": 2.0,
+    "valid_ppl": 182.3989064994659
+   },
+   {
+    "rho": 1.0,
+    "beta": 0.5,
+    "valid_ppl": 126.9463753329725
+   },
+   {
+    "rho": 1.0,
+    "beta": 0.75,
+    "valid_ppl": 122.44683752366419
+   },
+   {
+    "rho": 1.0,
+    "beta": 1.0,
+    "valid_ppl": 121.57415632724555
+   },
+   {
+    "rho": 1.0,
+    "beta": 1.25,
+    "valid_ppl": 125.12971550060004
+   },
+   {
+    "rho": 1.0,
+    "beta": 1.5,
+    "valid_ppl": 134.61930080918737
+   },
+   {
+    "rho": 1.0,
+    "beta": 2.0,
+    "valid_ppl": 184.27043283289763
+   }
+  ],
+  "KN-4": [
+   {
+    "rho": 0.99,
+    "beta": 0.5,
+    "valid_ppl": 105.33817660434666
+   },
+   {
+    "rho": 0.99,
+    "beta": 0.75,
+    "valid_ppl": 103.4203869667896
+   },
+   {
+    "rho": 0.99,
+    "beta": 1.0,
+    "valid_ppl": 106.41418981060447
+   },
+   {
+    "rho": 0.99,
+    "beta": 1.25,
+    "valid_ppl": 115.75555866645489
+   },
+   {
+    "rho": 0.99,
+    "beta": 1.5,
+    "valid_ppl": 134.20623747547538
+   },
+   {
+    "rho": 0.99,
+    "beta": 2.0,
+    "valid_ppl": 223.32069982064783
+   },
+   {
+    "rho": 0.997,
+    "beta": 0.5,
+    "valid_ppl": 105.34300756391963
+   },
+   {
+    "rho": 0.997,
+    "beta": 0.75,
+    "valid_ppl": 102.10623196368144
+   },
+   {
+    "rho": 0.997,
+    "beta": 1.0,
+    "valid_ppl": 102.5199782686268
+   },
+   {
+    "rho": 0.997,
+    "beta": 1.25,
+    "valid_ppl": 107.36428717833805
+   },
+   {
+    "rho": 0.997,
+    "beta": 1.5,
+    "valid_ppl": 118.15129949027259
+   },
+   {
+    "rho": 0.997,
+    "beta": 2.0,
+    "valid_ppl": 170.76448889839878
+   },
+   {
+    "rho": 0.999,
+    "beta": 0.5,
+    "valid_ppl": 106.14772837332234
+   },
+   {
+    "rho": 0.999,
+    "beta": 0.75,
+    "valid_ppl": 102.71495708329162
+   },
+   {
+    "rho": 0.999,
+    "beta": 1.0,
+    "valid_ppl": 102.49526358065229
+   },
+   {
+    "rho": 0.999,
+    "beta": 1.25,
+    "valid_ppl": 106.14402087252651
+   },
+   {
+    "rho": 0.999,
+    "beta": 1.5,
+    "valid_ppl": 114.91381755059098
+   },
+   {
+    "rho": 0.999,
+    "beta": 2.0,
+    "valid_ppl": 158.58872169510045
+   },
+   {
+    "rho": 0.9997,
+    "beta": 0.5,
+    "valid_ppl": 106.80768576824585
+   },
+   {
+    "rho": 0.9997,
+    "beta": 0.75,
+    "valid_ppl": 103.47639006119279
+   },
+   {
+    "rho": 0.9997,
+    "beta": 1.0,
+    "valid_ppl": 103.22434489966716
+   },
+   {
+    "rho": 0.9997,
+    "beta": 1.25,
+    "valid_ppl": 106.700553503511
+   },
+   {
+    "rho": 0.9997,
+    "beta": 1.5,
+    "valid_ppl": 115.12976330923989
+   },
+   {
+    "rho": 0.9997,
+    "beta": 2.0,
+    "valid_ppl": 157.32722877809016
+   },
+   {
+    "rho": 1.0,
+    "beta": 0.5,
+    "valid_ppl": 107.23694243046337
+   },
+   {
+    "rho": 1.0,
+    "beta": 0.75,
+    "valid_ppl": 104.04262569654657
+   },
+   {
+    "rho": 1.0,
+    "beta": 1.0,
+    "valid_ppl": 103.89865733924354
+   },
+   {
+    "rho": 1.0,
+    "beta": 1.25,
+    "valid_ppl": 107.47332326772751
+   },
+   {
+    "rho": 1.0,
+    "beta": 1.5,
+    "valid_ppl": 116.01974437218973
+   },
+   {
+    "rho": 1.0,
+    "beta": 2.0,
+    "valid_ppl": 158.7582661131869
+   }
+  ]
+ },
+ "self_plus_cross": {
+  "KN-3": {
+   "lam": 2.0,
+   "rho_cross": 0.97,
+   "beta": 0.75,
+   "valid_ppl": 117.97369345637424,
+   "test_ppl": 119.589056020268,
+   "edge": false
+  },
+  "KN-4": {
+   "lam": 1.0,
+   "rho_cross": 0.97,
+   "beta": 0.75,
+   "valid_ppl": 101.0582070236004,
+   "test_ppl": 101.01308074355282,
+   "edge": false
+  }
+ },
+ "self_field_random_clusters": {
+  "KN-3": {
+   "rho": 0.997,
+   "beta": 0.75,
+   "valid_ppl": 133.59176504246727,
+   "test_ppl": 135.57093826528907
+  }
+ },
+ "stacks": {
+  "KN-3": {
+   "test_ppl": 149.2069111692826
+  },
+  "KN-3 + self field": {
+   "test_ppl": 120.98021218098455
+  },
+  "KN-3 + self field + cross-cluster forces": {
+   "test_ppl": 119.589056020268
+  },
+  "KN-3 + unigram cache": {
+   "decay_u": 0.997,
+   "decay_b": null,
+   "kappa_u": -2.0,
+   "kappa_b": null,
+   "valid_ppl": 114.89386449618932,
+   "test_ppl": 114.32480511919681
+  },
+  "KN-3 + unigram cache + successor table": {
+   "decay_u": 0.997,
+   "decay_b": 0.999,
+   "kappa_u": -2.0,
+   "kappa_b": -1.0,
+   "valid_ppl": 97.96284418641072,
+   "test_ppl": 96.97731198358223
+  },
+  "KN-3 + self field + unigram cache": {
+   "decay_u": 0.999,
+   "decay_b": null,
+   "kappa_u": -2.0,
+   "kappa_b": null,
+   "valid_ppl": 104.0586171214043,
+   "test_ppl": 103.01054638060045
+  },
+  "KN-3 + self field + unigram cache + successor table": {
+   "decay_u": 0.997,
+   "decay_b": 0.999,
+   "kappa_u": -3.0,
+   "kappa_b": -2.0,
+   "valid_ppl": 91.26222569674687,
+   "test_ppl": 90.61455964556691
+  },
+  "KN-3 + self field + cross-cluster forces + unigram cache": {
+   "decay_u": 0.999,
+   "decay_b": null,
+   "kappa_u": -2.0,
+   "kappa_b": null,
+   "valid_ppl": 101.70924527007193,
+   "test_ppl": 100.86133775884298
+  },
+  "KN-3 + self field + cross-cluster forces + unigram cache + successor table": {
+   "decay_u": 0.997,
+   "decay_b": 0.999,
+   "kappa_u": -3.0,
+   "kappa_b": -2.0,
+   "valid_ppl": 88.98628304807922,
+   "test_ppl": 88.53172488805157
+  },
+  "KN-4": {
+   "test_ppl": 123.12252648967362
+  },
+  "KN-4 + self field": {
+   "test_ppl": 102.08889383976654
+  },
+  "KN-4 + self field + cross-cluster forces": {
+   "test_ppl": 101.01308074355282
+  },
+  "KN-4 + unigram cache": {
+   "decay_u": 0.997,
+   "decay_b": null,
+   "kappa_u": -2.0,
+   "kappa_b": null,
+   "valid_ppl": 96.56606143536622,
+   "test_ppl": 95.15175079811371
+  },
+  "KN-4 + unigram cache + successor table": {
+   "decay_u": 0.997,
+   "decay_b": 0.999,
+   "kappa_u": -3.0,
+   "kappa_b": -2.0,
+   "valid_ppl": 83.7547393519232,
+   "test_ppl": 82.85472618860571
+  },
+  "KN-4 + self field + unigram cache": {
+   "decay_u": 0.999,
+   "decay_b": null,
+   "kappa_u": -2.0,
+   "kappa_b": null,
+   "valid_ppl": 87.72768577010386,
+   "test_ppl": 85.98189310870708
+  },
+  "KN-4 + self field + unigram cache + successor table": {
+   "decay_u": 0.997,
+   "decay_b": 0.999,
+   "kappa_u": -3.0,
+   "kappa_b": -2.0,
+   "valid_ppl": 77.17094893224748,
+   "test_ppl": 75.9607952627467
+  },
+  "KN-4 + self field + cross-cluster forces + unigram cache": {
+   "decay_u": 0.999,
+   "decay_b": null,
+   "kappa_u": -2.0,
+   "kappa_b": null,
+   "valid_ppl": 86.99680608314875,
+   "test_ppl": 85.27425582741559
+  },
+  "KN-4 + self field + cross-cluster forces + unigram cache + successor table": {
+   "decay_u": 0.997,
+   "decay_b": 0.999,
+   "kappa_u": -3.0,
+   "kappa_b": -2.0,
+   "valid_ppl": 76.5708668427384,
+   "test_ppl": 75.37718533016613
+  }
+ },
+ "bootstrap": {
+  "KN-3 | self field vs KN": {
+   "ppl_ratio": 0.8108217724829568,
+   "ci95": [
+    0.8007736490111806,
+    0.8211804235679762
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | adding cross-cluster forces to the self field": {
+   "ppl_ratio": 0.9885009611436664,
+   "ci95": [
+    0.9861600686330266,
+    0.9906985984124163
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | adding the self field to the unigram cache": {
+   "ppl_ratio": 0.9010340868125696,
+   "ci95": [
+    0.8904362120198588,
+    0.9105772473622394
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | adding the unigram cache to the self field": {
+   "ppl_ratio": 0.8514660746874715,
+   "ci95": [
+    0.8290998010397688,
+    0.8738087250202948
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | adding the self field to both caches": {
+   "ppl_ratio": 0.9343892689138217,
+   "ci95": [
+    0.9231860506795871,
+    0.9461487862463526
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | adding the successor table to self field + unigram cache (value of order)": {
+   "ppl_ratio": 0.8796629357810296,
+   "ci95": [
+    0.8609505710648933,
+    0.8947986504414709
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | self field vs KN": {
+   "ppl_ratio": 0.829165033811491,
+   "ci95": [
+    0.8203602636137122,
+    0.838230469545092
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | adding cross-cluster forces to the self field": {
+   "ppl_ratio": 0.9894619967388197,
+   "ci95": [
+    0.9882430791158557,
+    0.9906596437895075
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | adding the self field to the unigram cache": {
+   "ppl_ratio": 0.9036291228223151,
+   "ci95": [
+    0.8957611489401772,
+    0.9101441031047071
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | adding the unigram cache to the self field": {
+   "ppl_ratio": 0.8422257297023896,
+   "ci95": [
+    0.8195182271045361,
+    0.8678416102028359
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | adding the self field to both caches": {
+   "ppl_ratio": 0.9167949585619779,
+   "ci95": [
+    0.910288706221301,
+    0.9228947747788351
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | adding the successor table to self field + unigram cache (value of order)": {
+   "ppl_ratio": 0.8834510676184972,
+   "ci95": [
+    0.8642020974864337,
+    0.8980086841055107
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | self field: semantic clusters vs random clusters": {
+   "ppl_ratio": 0.8923757091969596,
+   "ci95": [
+    0.885199186599786,
+    0.8991719090504615
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | random-cluster self field vs KN": {
+   "ppl_ratio": 0.9086103130402413,
+   "ci95": [
+    0.8988386409294807,
+    0.9182156601672604
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  }
+ },
+ "cloze_left": {
+  "KN-3": {
+   "acc@1": 0.0865,
+   "acc@10": 0.2245,
+   "mrr": 0.13426744606682406,
+   "n": 2000
+  },
+  "KN-3 + self field": {
+   "acc@1": 0.1145,
+   "acc@10": 0.271,
+   "mrr": 0.17028087949414228,
+   "n": 2000
+  },
+  "mrr_diff": {
+   "diff": 0.03601343342731823,
+   "ci95": [
+    0.028486502465765885,
+    0.043895068498232
+   ]
+  }
+ },
+ "runtime_sec": 642.344654083252
+}
