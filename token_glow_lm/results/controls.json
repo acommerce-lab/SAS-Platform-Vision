@@ -1,0 +1,550 @@
+{
+ "args": {
+  "data_dir": "/home/user/SAS-Platform-Vision/token_glow_lm/data/wikitext-103-v1",
+  "out_dir": "results",
+  "max_train_tokens": null,
+  "M": 30000,
+  "window": 5,
+  "kcl": 500,
+  "dim": 200,
+  "procs": 4,
+  "bootstrap": 2000,
+  "cloze_n": 2000,
+  "induction_seqs": 100,
+  "seed": 0
+ },
+ "direct_glow": {
+  "KN-3 | full PMI field": {
+   "rho": 0.97,
+   "beta": 3.0,
+   "valid_ppl": 130.60716981874018,
+   "test_ppl": 133.4681770152706,
+   "edge": false
+  },
+  "KN-4 | full PMI field": {
+   "rho": 0.97,
+   "beta": 3.0,
+   "valid_ppl": 110.69281806529457,
+   "test_ppl": 111.53829740503303,
+   "edge": false
+  },
+  "KN-3 | diagonal only (self-attraction)": {
+   "rho": 0.99,
+   "beta": 6.0,
+   "valid_ppl": 139.54248344273753,
+   "test_ppl": 142.2966374463969,
+   "edge": false
+  },
+  "KN-4 | diagonal only (self-attraction)": {
+   "rho": 0.99,
+   "beta": 6.0,
+   "valid_ppl": 117.1897744185013,
+   "test_ppl": 117.87963412803637,
+   "edge": false
+  },
+  "KN-3 | off-diagonal only": {
+   "rho": 0.97,
+   "beta": 3.0,
+   "valid_ppl": 134.53571799663746,
+   "test_ppl": 138.1275539826899,
+   "edge": false
+  },
+  "KN-4 | off-diagonal only": {
+   "rho": 0.97,
+   "beta": 3.0,
+   "valid_ppl": 113.57743925290812,
+   "test_ppl": 115.03305663204651,
+   "edge": false
+  },
+  "KN-3 | attraction only (A>0)": {
+   "rho": 0.99,
+   "beta": 4.0,
+   "valid_ppl": 133.51092948473587,
+   "test_ppl": 136.5518202018778,
+   "edge": false
+  },
+  "KN-4 | attraction only (A>0)": {
+   "rho": 0.99,
+   "beta": 4.0,
+   "valid_ppl": 113.07988920766167,
+   "test_ppl": 114.0001451792435,
+   "edge": false
+  },
+  "KN-3 | repulsion only (A<0)": {
+   "rho": 0.9,
+   "beta": 2.0,
+   "valid_ppl": 141.5686893518191,
+   "test_ppl": 144.84724880570005,
+   "edge": true
+  },
+  "KN-4 | repulsion only (A<0)": {
+   "rho": 0.9,
+   "beta": 2.0,
+   "valid_ppl": 118.66434213483224,
+   "test_ppl": 119.83394780990344,
+   "edge": true
+  },
+  "KN-3 | identity (plain cluster cache)": {
+   "rho": 0.97,
+   "beta": 1.0,
+   "valid_ppl": 145.14895724621607,
+   "test_ppl": 148.5477877511018,
+   "edge": false
+  },
+  "KN-4 | identity (plain cluster cache)": {
+   "rho": 0.97,
+   "beta": 1.0,
+   "valid_ppl": 121.20814865047203,
+   "test_ppl": 122.43702092031344,
+   "edge": false
+  }
+ },
+ "caches": {
+  "KN-3 | KN + unigram cache": {
+   "decay_u": 0.997,
+   "decay_b": null,
+   "kappa_u": -2.0,
+   "kappa_b": null,
+   "valid_ppl": 114.89386449618932,
+   "test_ppl": 114.32480511919681
+  },
+  "KN-3 | KN + successor table": {
+   "decay_u": null,
+   "decay_b": 0.999,
+   "kappa_u": null,
+   "kappa_b": -2.0,
+   "valid_ppl": 110.9787472059779,
+   "test_ppl": 112.61646432939136
+  },
+  "KN-3 | KN + unigram cache + successor table": {
+   "decay_u": 0.997,
+   "decay_b": 0.999,
+   "kappa_u": -2.0,
+   "kappa_b": -1.0,
+   "valid_ppl": 97.96284418641072,
+   "test_ppl": 96.97731198358223
+  },
+  "KN-3 | direct glow + unigram cache": {
+   "decay_u": 0.997,
+   "decay_b": null,
+   "kappa_u": -2.0,
+   "kappa_b": null,
+   "valid_ppl": 106.25342405251908,
+   "test_ppl": 105.79622879073749
+  },
+  "KN-3 | direct glow + successor table": {
+   "decay_u": null,
+   "decay_b": 0.999,
+   "kappa_u": null,
+   "kappa_b": -2.0,
+   "valid_ppl": 101.90835534408596,
+   "test_ppl": 103.3575751977292
+  },
+  "KN-3 | direct glow + unigram cache + successor table": {
+   "decay_u": 0.997,
+   "decay_b": 0.999,
+   "kappa_u": -2.0,
+   "kappa_b": -1.0,
+   "valid_ppl": 91.81895620845461,
+   "test_ppl": 91.0393152960402
+  },
+  "KN-4 | KN + unigram cache": {
+   "decay_u": 0.997,
+   "decay_b": null,
+   "kappa_u": -2.0,
+   "kappa_b": null,
+   "valid_ppl": 96.56606143536622,
+   "test_ppl": 95.15175079811371
+  },
+  "KN-4 | KN + successor table": {
+   "decay_u": null,
+   "decay_b": 0.999,
+   "kappa_u": null,
+   "kappa_b": -2.0,
+   "valid_ppl": 94.03399200753384,
+   "test_ppl": 94.5170248173415
+  },
+  "KN-4 | KN + unigram cache + successor table": {
+   "decay_u": 0.997,
+   "decay_b": 0.999,
+   "kappa_u": -3.0,
+   "kappa_b": -2.0,
+   "valid_ppl": 83.7547393519232,
+   "test_ppl": 82.85472618860571
+  },
+  "KN-4 | direct glow + unigram cache": {
+   "decay_u": 0.997,
+   "decay_b": null,
+   "kappa_u": -2.0,
+   "kappa_b": null,
+   "valid_ppl": 90.2099708393634,
+   "test_ppl": 88.86341682272042
+  },
+  "KN-4 | direct glow + successor table": {
+   "decay_u": null,
+   "decay_b": 0.999,
+   "kappa_u": null,
+   "kappa_b": -2.0,
+   "valid_ppl": 87.11761155932484,
+   "test_ppl": 87.39816053461554
+  },
+  "KN-4 | direct glow + unigram cache + successor table": {
+   "decay_u": 0.997,
+   "decay_b": 0.999,
+   "kappa_u": -3.0,
+   "kappa_b": -2.0,
+   "valid_ppl": 78.56647377935278,
+   "test_ppl": 77.73847691742236
+  }
+ },
+ "baseline": {
+  "KN-3": {
+   "valid_ppl": 145.61874364084252,
+   "test_ppl": 149.2069111692826
+  },
+  "KN-4": {
+   "valid_ppl": 121.7426486708769,
+   "test_ppl": 123.12252648967362
+  }
+ },
+ "bootstrap": {
+  "KN-3 | unigram cache vs KN": {
+   "ppl_ratio": 0.7662165527271707,
+   "ci95": [
+    0.7417255597470075,
+    0.794364005060774
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | successor table vs KN": {
+   "ppl_ratio": 0.7547670777905363,
+   "ci95": [
+    0.7257328115015812,
+    0.7800150182851359
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | successor table vs unigram cache": {
+   "ppl_ratio": 0.9850571292203455,
+   "ci95": [
+    0.9549749373585197,
+    1.011096983178095
+   ],
+   "p_not_better": 0.1335,
+   "blocks": 63
+  },
+  "KN-3 | adding the table to the unigram cache (value of order)": {
+   "ppl_ratio": 0.8482613364831202,
+   "ci95": [
+    0.8194927741985334,
+    0.8697798770795563
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | adding the unigram cache to the table": {
+   "ppl_ratio": 0.8611290770054153,
+   "ci95": [
+    0.8430399552124592,
+    0.8801291131802941
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | direct glow vs KN": {
+   "ppl_ratio": 0.8945173917838466,
+   "ci95": [
+    0.8837614880043404,
+    0.9042166588448154
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | adding direct glow to the unigram cache": {
+   "ppl_ratio": 0.925400473505578,
+   "ci95": [
+    0.9181035462105305,
+    0.9325759251929717
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | adding direct glow to both caches": {
+   "ppl_ratio": 0.9387692176026977,
+   "ci95": [
+    0.9340044569871123,
+    0.9431126090991614
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | full PMI field vs identity (plain cluster cache)": {
+   "ppl_ratio": 0.8984864671219616,
+   "ci95": [
+    0.8883142015048361,
+    0.9080082445833021
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | full PMI field vs diagonal only": {
+   "ppl_ratio": 0.9379573502961228,
+   "ci95": [
+    0.9333982154708946,
+    0.9423308203791724
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | unigram cache vs KN": {
+   "ppl_ratio": 0.7728216233939467,
+   "ci95": [
+    0.7460056890484279,
+    0.8021052134252082
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | successor table vs KN": {
+   "ppl_ratio": 0.7676663849589587,
+   "ci95": [
+    0.7369450651966534,
+    0.7959565391344555
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | successor table vs unigram cache": {
+   "ppl_ratio": 0.9933293294611141,
+   "ci95": [
+    0.9640554737114395,
+    1.0197327007104326
+   ],
+   "p_not_better": 0.328,
+   "blocks": 63
+  },
+  "KN-4 | adding the table to the unigram cache (value of order)": {
+   "ppl_ratio": 0.8707640741619244,
+   "ci95": [
+    0.849922380913553,
+    0.8870375737366984
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | adding the unigram cache to the table": {
+   "ppl_ratio": 0.8766116617479905,
+   "ci95": [
+    0.8631144522414066,
+    0.8914700225470249
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | direct glow vs KN": {
+   "ppl_ratio": 0.9059130005294991,
+   "ci95": [
+    0.8976761654672047,
+    0.913927746292914
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | adding direct glow to the unigram cache": {
+   "ppl_ratio": 0.9339125773025918,
+   "ci95": [
+    0.9285675516158978,
+    0.9388186367153227
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | adding direct glow to both caches": {
+   "ppl_ratio": 0.9382503629360018,
+   "ci95": [
+    0.934099421756905,
+    0.9425347758617991
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | full PMI field vs identity (plain cluster cache)": {
+   "ppl_ratio": 0.9109850645388232,
+   "ci95": [
+    0.9028897919203148,
+    0.9189699899406626
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | full PMI field vs diagonal only": {
+   "ppl_ratio": 0.9462049846870443,
+   "ci95": [
+    0.9421895980630252,
+    0.9501331252371102
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 vs KN-3 (one more token of context)": {
+   "ppl_ratio": 0.8251797823894714,
+   "ci95": [
+    0.7672120533902363,
+    0.8750372450727733
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  }
+ },
+ "cloze": {
+  "KN-3": {
+   "left": {
+    "acc@1": 0.0865,
+    "acc@10": 0.2245,
+    "mrr": 0.13426744606682406,
+    "n": 2000
+   },
+   "bidir": {
+    "acc@1": 0.2605,
+    "acc@10": 0.49,
+    "mrr": 0.3371662675396032,
+    "n": 2000
+   }
+  },
+  "KN-3 + unigram cache": {
+   "left": {
+    "acc@1": 0.087,
+    "acc@10": 0.219,
+    "mrr": 0.13531934259335912,
+    "n": 2000
+   },
+   "bidir": {
+    "acc@1": 0.269,
+    "acc@10": 0.518,
+    "mrr": 0.3511248711316357,
+    "n": 2000
+   }
+  },
+  "KN-3 + successor table": {
+   "left": {
+    "acc@1": 0.106,
+    "acc@10": 0.2775,
+    "mrr": 0.1656365217587226,
+    "n": 2000
+   },
+   "bidir": {
+    "acc@1": 0.2795,
+    "acc@10": 0.527,
+    "mrr": 0.3650504784012147,
+    "n": 2000
+   }
+  },
+  "KN-3 + unigram cache + successor table": {
+   "left": {
+    "acc@1": 0.12,
+    "acc@10": 0.288,
+    "mrr": 0.17905446686243773,
+    "n": 2000
+   },
+   "bidir": {
+    "acc@1": 0.2965,
+    "acc@10": 0.544,
+    "mrr": 0.37942313778575304,
+    "n": 2000
+   }
+  },
+  "KN-3 + direct glow": {
+   "left": {
+    "acc@1": 0.107,
+    "acc@10": 0.2495,
+    "mrr": 0.15645358712824953,
+    "n": 2000
+   },
+   "bidir": {
+    "acc@1": 0.2725,
+    "acc@10": 0.5075,
+    "mrr": 0.34913384754632043,
+    "n": 2000
+   }
+  },
+  "KN-3 + direct glow + both caches": {
+   "left": {
+    "acc@1": 0.128,
+    "acc@10": 0.307,
+    "mrr": 0.19091001447292336,
+    "n": 2000
+   },
+   "bidir": {
+    "acc@1": 0.3,
+    "acc@10": 0.551,
+    "mrr": 0.3848744065565105,
+    "n": 2000
+   }
+  }
+ },
+ "cloze_paired": {
+  "successor table minus unigram cache": {
+   "mrr_diff": 0.03031717916536344,
+   "ci95": [
+    0.02426564954978808,
+    0.036807088260943366
+   ]
+  },
+  "both caches minus unigram cache": {
+   "mrr_diff": 0.043735124269078565,
+   "ci95": [
+    0.03540607980710327,
+    0.05245530123400058
+   ]
+  },
+  "unigram cache minus KN": {
+   "mrr_diff": 0.0010518965265350786,
+   "ci95": [
+    0.00041195067986058743,
+    0.001830957826338084
+   ]
+  },
+  "direct glow minus KN": {
+   "mrr_diff": 0.022186141061425475,
+   "ci95": [
+    0.017467728822341533,
+    0.027096991944427343
+   ]
+  }
+ },
+ "synthetic_induction": {
+  "KN-3": {
+   "ppl_first_copy": 281127.898190962,
+   "ppl_second_copy": 281127.898190962,
+   "acc_second_copy": 0.0
+  },
+  "KN-3 + unigram cache": {
+   "ppl_first_copy": 319174.4219183499,
+   "ppl_second_copy": 149.6118555631602,
+   "acc_second_copy": 0.0
+  },
+  "KN-3 + successor table": {
+   "ppl_first_copy": 281127.898190962,
+   "ppl_second_copy": 8.388588610762639,
+   "acc_second_copy": 0.7072727272727275
+  },
+  "KN-3 + unigram cache + successor table": {
+   "ppl_first_copy": 319174.4219183499,
+   "ppl_second_copy": 4.002347025926708,
+   "acc_second_copy": 0.9709090909090908
+  },
+  "KN-3 + direct glow": {
+   "ppl_first_copy": 1229355.5890710547,
+   "ppl_second_copy": 421053.30609281966,
+   "acc_second_copy": 0.0
+  },
+  "KN-3 + direct glow + both caches": {
+   "ppl_first_copy": 1395730.775916496,
+   "ppl_second_copy": 4.002349888182336,
+   "acc_second_copy": 0.9490909090909091
+  }
+ },
+ "runtime_sec": 798.6512448787689
+}
