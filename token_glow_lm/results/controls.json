@@ -97,6 +97,27 @@
    "valid_ppl": 121.20814865047203,
    "test_ppl": 122.43702092031344,
    "edge": false
+  },
+  "KN-3 | prior-normalised cluster cache (log-ratio, no PMI matrix)": {
+   "rho": 0.997,
+   "beta": 1.0,
+   "valid_ppl": 119.62107851335693,
+   "test_ppl": 120.98151873755725,
+   "edge": true
+  },
+  "KN-4 | prior-normalised cluster cache (log-ratio, no PMI matrix)": {
+   "rho": 0.997,
+   "beta": 1.0,
+   "valid_ppl": 102.52016907326389,
+   "test_ppl": 102.2437278160646,
+   "edge": true
+  },
+  "KN-3 | full PMI field on RANDOM clusters (frequency-matched shuffle of the labels)": {
+   "rho": 0.97,
+   "beta": 4.0,
+   "valid_ppl": 144.24676645012545,
+   "test_ppl": 147.6986098834269,
+   "edge": false
   }
  },
  "caches": {
@@ -298,11 +319,20 @@
    "p_not_better": 0.0,
    "blocks": 63
   },
+  "KN-3 | full PMI field vs prior-normalised cluster cache": {
+   "ppl_ratio": 1.1032112872115656,
+   "ci95": [
+    1.093495992619936,
+    1.114407212450517
+   ],
+   "p_not_better": 1.0,
+   "blocks": 63
+  },
   "KN-4 | unigram cache vs KN": {
    "ppl_ratio": 0.7728216233939467,
    "ci95": [
-    0.7460056890484279,
-    0.8021052134252082
+    0.7463077709676422,
+    0.8035030280160655
    ],
    "p_not_better": 0.0,
    "blocks": 63
@@ -310,8 +340,8 @@
   "KN-4 | successor table vs KN": {
    "ppl_ratio": 0.7676663849589587,
    "ci95": [
-    0.7369450651966534,
-    0.7959565391344555
+    0.7361301903782204,
+    0.7972199989739024
    ],
    "p_not_better": 0.0,
    "blocks": 63
@@ -319,17 +349,17 @@
   "KN-4 | successor table vs unigram cache": {
    "ppl_ratio": 0.9933293294611141,
    "ci95": [
-    0.9640554737114395,
-    1.0197327007104326
+    0.9677998591904222,
+    1.0186220423201455
    ],
-   "p_not_better": 0.328,
+   "p_not_better": 0.3145,
    "blocks": 63
   },
   "KN-4 | adding the table to the unigram cache (value of order)": {
    "ppl_ratio": 0.8707640741619244,
    "ci95": [
-    0.849922380913553,
-    0.8870375737366984
+    0.848916061647712,
+    0.8873695961070117
    ],
    "p_not_better": 0.0,
    "blocks": 63
@@ -337,8 +367,8 @@
   "KN-4 | adding the unigram cache to the table": {
    "ppl_ratio": 0.8766116617479905,
    "ci95": [
-    0.8631144522414066,
-    0.8914700225470249
+    0.8629345114007487,
+    0.8916349134976587
    ],
    "p_not_better": 0.0,
    "blocks": 63
@@ -346,8 +376,8 @@
   "KN-4 | direct glow vs KN": {
    "ppl_ratio": 0.9059130005294991,
    "ci95": [
-    0.8976761654672047,
-    0.913927746292914
+    0.8979152675331044,
+    0.9136740710256045
    ],
    "p_not_better": 0.0,
    "blocks": 63
@@ -355,8 +385,8 @@
   "KN-4 | adding direct glow to the unigram cache": {
    "ppl_ratio": 0.9339125773025918,
    "ci95": [
-    0.9285675516158978,
-    0.9388186367153227
+    0.9287645741500841,
+    0.9391947740146501
    ],
    "p_not_better": 0.0,
    "blocks": 63
@@ -364,8 +394,8 @@
   "KN-4 | adding direct glow to both caches": {
    "ppl_ratio": 0.9382503629360018,
    "ci95": [
-    0.934099421756905,
-    0.9425347758617991
+    0.9342593183280615,
+    0.9424566761474898
    ],
    "p_not_better": 0.0,
    "blocks": 63
@@ -373,8 +403,8 @@
   "KN-4 | full PMI field vs identity (plain cluster cache)": {
    "ppl_ratio": 0.9109850645388232,
    "ci95": [
-    0.9028897919203148,
-    0.9189699899406626
+    0.9030679540691179,
+    0.918239666271563
    ],
    "p_not_better": 0.0,
    "blocks": 63
@@ -382,8 +412,35 @@
   "KN-4 | full PMI field vs diagonal only": {
    "ppl_ratio": 0.9462049846870443,
    "ci95": [
-    0.9421895980630252,
-    0.9501331252371102
+    0.9419142591660148,
+    0.9498868804018656
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-4 | full PMI field vs prior-normalised cluster cache": {
+   "ppl_ratio": 1.0909060124029257,
+   "ci95": [
+    1.0797574028788406,
+    1.102230011422698
+   ],
+   "p_not_better": 1.0,
+   "blocks": 63
+  },
+  "KN-3 | full PMI field: semantic clusters vs random clusters": {
+   "ppl_ratio": 0.9036522220528144,
+   "ci95": [
+    0.8941811646690161,
+    0.9128136059574229
+   ],
+   "p_not_better": 0.0,
+   "blocks": 63
+  },
+  "KN-3 | random-cluster field vs KN": {
+   "ppl_ratio": 0.9898912103063098,
+   "ci95": [
+    0.9882083638435152,
+    0.991666192977904
    ],
    "p_not_better": 0.0,
    "blocks": 63
@@ -391,8 +448,8 @@
   "KN-4 vs KN-3 (one more token of context)": {
    "ppl_ratio": 0.8251797823894714,
    "ci95": [
-    0.7672120533902363,
-    0.8750372450727733
+    0.7647961973444699,
+    0.8754435569782539
    ],
    "p_not_better": 0.0,
    "blocks": 63
@@ -488,63 +545,63 @@
   "successor table minus unigram cache": {
    "mrr_diff": 0.03031717916536344,
    "ci95": [
-    0.02426564954978808,
-    0.036807088260943366
+    0.024268724877340813,
+    0.03670723580449178
    ]
   },
   "both caches minus unigram cache": {
    "mrr_diff": 0.043735124269078565,
    "ci95": [
-    0.03540607980710327,
-    0.05245530123400058
+    0.03522010180758292,
+    0.05248072721756997
    ]
   },
   "unigram cache minus KN": {
    "mrr_diff": 0.0010518965265350786,
    "ci95": [
-    0.00041195067986058743,
+    0.0004133313868716051,
     0.001830957826338084
    ]
   },
   "direct glow minus KN": {
    "mrr_diff": 0.022186141061425475,
    "ci95": [
-    0.017467728822341533,
-    0.027096991944427343
+    0.01749077404742481,
+    0.02702859604891057
    ]
   }
  },
  "synthetic_induction": {
   "KN-3": {
-   "ppl_first_copy": 281127.898190962,
-   "ppl_second_copy": 281127.898190962,
+   "ppl_first_copy": 273304.7261880831,
+   "ppl_second_copy": 273369.6065941556,
    "acc_second_copy": 0.0
   },
   "KN-3 + unigram cache": {
-   "ppl_first_copy": 319174.4219183499,
-   "ppl_second_copy": 149.6118555631602,
+   "ppl_first_copy": 310292.4987166527,
+   "ppl_second_copy": 149.52076428183392,
    "acc_second_copy": 0.0
   },
   "KN-3 + successor table": {
-   "ppl_first_copy": 281127.898190962,
-   "ppl_second_copy": 8.388588610762639,
-   "acc_second_copy": 0.7072727272727275
+   "ppl_first_copy": 273304.7261880831,
+   "ppl_second_copy": 8.388297706006327,
+   "acc_second_copy": 0.7154545454545456
   },
   "KN-3 + unigram cache + successor table": {
-   "ppl_first_copy": 319174.4219183499,
-   "ppl_second_copy": 4.002347025926708,
-   "acc_second_copy": 0.9709090909090908
+   "ppl_first_copy": 310292.4987166527,
+   "ppl_second_copy": 4.0022965567781235,
+   "acc_second_copy": 0.9645454545454544
   },
   "KN-3 + direct glow": {
-   "ppl_first_copy": 1229355.5890710547,
-   "ppl_second_copy": 421053.30609281966,
+   "ppl_first_copy": 1240668.927618113,
+   "ppl_second_copy": 401963.1059908142,
    "acc_second_copy": 0.0
   },
   "KN-3 + direct glow + both caches": {
-   "ppl_first_copy": 1395730.775916496,
-   "ppl_second_copy": 4.002349888182336,
-   "acc_second_copy": 0.9490909090909091
+   "ppl_first_copy": 1408575.2083401773,
+   "ppl_second_copy": 4.002320426425357,
+   "acc_second_copy": 0.9472727272727272
   }
  },
- "runtime_sec": 798.6512448787689
+ "runtime_sec": 1368.1659064292908
 }

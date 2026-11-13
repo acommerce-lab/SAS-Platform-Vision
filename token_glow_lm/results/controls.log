@@ -1,71 +1,80 @@
-[   81.9s] KN-4 fitted
-[   83.3s] KN-3: valid 145.62 test 149.21
-[   83.3s] KN-4: valid 121.74 test 123.12
-[  209.7s] clusters and affinity rebuilt
-[  215.0s] cache routes computed
-[  217.5s] cluster masses ready: order 3 valid
-[  220.0s] cluster masses ready: order 3 test
-[  220.4s] cluster masses ready: order 4 valid
-[  220.8s] cluster masses ready: order 4 test
-[  327.1s] direct glow grid done for rho=0.9
-[  431.0s] direct glow grid done for rho=0.97
-[  530.8s] direct glow grid done for rho=0.99
-[  630.2s] direct glow grid done for rho=0.997
-[  689.8s] direct glow KN-3 [full PMI field]: rho=0.97 beta=3.0 valid 130.61 test 133.47
-[  689.8s] direct glow KN-4 [full PMI field]: rho=0.97 beta=3.0 valid 110.69 test 111.54
-[  689.8s] direct glow KN-3 [diagonal only (self-attraction)]: rho=0.99 beta=6.0 valid 139.54 test 142.30
-[  689.8s] direct glow KN-4 [diagonal only (self-attraction)]: rho=0.99 beta=6.0 valid 117.19 test 117.88
-[  689.8s] direct glow KN-3 [off-diagonal only]: rho=0.97 beta=3.0 valid 134.54 test 138.13
-[  689.8s] direct glow KN-4 [off-diagonal only]: rho=0.97 beta=3.0 valid 113.58 test 115.03
-[  689.8s] direct glow KN-3 [attraction only (A>0)]: rho=0.99 beta=4.0 valid 133.51 test 136.55
-[  689.8s] direct glow KN-4 [attraction only (A>0)]: rho=0.99 beta=4.0 valid 113.08 test 114.00
-[  689.8s] direct glow KN-3 [repulsion only (A<0)]: rho=0.9 beta=2.0 valid 141.57 test 144.85
-[  689.8s] direct glow KN-4 [repulsion only (A<0)]: rho=0.9 beta=2.0 valid 118.66 test 119.83
-[  689.8s] direct glow KN-3 [identity (plain cluster cache)]: rho=0.97 beta=1.0 valid 145.15 test 148.55
-[  689.8s] direct glow KN-4 [identity (plain cluster cache)]: rho=0.97 beta=1.0 valid 121.21 test 122.44
-[  689.8s] KN-3 KN + unigram cache: {'decay_u': 0.997, 'decay_b': None, 'kappa_u': -2.0, 'kappa_b': None, 'valid_ppl': 114.89386449618932, 'test_ppl': 114.32480511919681}
-[  689.9s] KN-3 KN + successor table: {'decay_u': None, 'decay_b': 0.999, 'kappa_u': None, 'kappa_b': -2.0, 'valid_ppl': 110.9787472059779, 'test_ppl': 112.61646432939136}
-[  691.2s] KN-3 KN + unigram cache + successor table: {'decay_u': 0.997, 'decay_b': 0.999, 'kappa_u': -2.0, 'kappa_b': -1.0, 'valid_ppl': 97.96284418641072, 'test_ppl': 96.97731198358223}
-[  691.3s] KN-3 direct glow + unigram cache: {'decay_u': 0.997, 'decay_b': None, 'kappa_u': -2.0, 'kappa_b': None, 'valid_ppl': 106.25342405251908, 'test_ppl': 105.79622879073749}
-[  691.3s] KN-3 direct glow + successor table: {'decay_u': None, 'decay_b': 0.999, 'kappa_u': None, 'kappa_b': -2.0, 'valid_ppl': 101.90835534408596, 'test_ppl': 103.3575751977292}
-[  692.6s] KN-3 direct glow + unigram cache + successor table: {'decay_u': 0.997, 'decay_b': 0.999, 'kappa_u': -2.0, 'kappa_b': -1.0, 'valid_ppl': 91.81895620845461, 'test_ppl': 91.0393152960402}
-[  692.7s] KN-4 KN + unigram cache: {'decay_u': 0.997, 'decay_b': None, 'kappa_u': -2.0, 'kappa_b': None, 'valid_ppl': 96.56606143536622, 'test_ppl': 95.15175079811371}
-[  692.7s] KN-4 KN + successor table: {'decay_u': None, 'decay_b': 0.999, 'kappa_u': None, 'kappa_b': -2.0, 'valid_ppl': 94.03399200753384, 'test_ppl': 94.5170248173415}
-[  694.1s] KN-4 KN + unigram cache + successor table: {'decay_u': 0.997, 'decay_b': 0.999, 'kappa_u': -3.0, 'kappa_b': -2.0, 'valid_ppl': 83.7547393519232, 'test_ppl': 82.85472618860571}
-[  694.1s] KN-4 direct glow + unigram cache: {'decay_u': 0.997, 'decay_b': None, 'kappa_u': -2.0, 'kappa_b': None, 'valid_ppl': 90.2099708393634, 'test_ppl': 88.86341682272042}
-[  694.2s] KN-4 direct glow + successor table: {'decay_u': None, 'decay_b': 0.999, 'kappa_u': None, 'kappa_b': -2.0, 'valid_ppl': 87.11761155932484, 'test_ppl': 87.39816053461554}
-[  695.5s] KN-4 direct glow + unigram cache + successor table: {'decay_u': 0.997, 'decay_b': 0.999, 'kappa_u': -3.0, 'kappa_b': -2.0, 'valid_ppl': 78.56647377935278, 'test_ppl': 77.73847691742236}
-[  695.9s] bootstrap KN-3 | unigram cache vs KN: ratio 0.7662 [0.7417, 0.7944]
-[  695.9s] bootstrap KN-3 | successor table vs KN: ratio 0.7548 [0.7257, 0.7800]
-[  695.9s] bootstrap KN-3 | successor table vs unigram cache: ratio 0.9851 [0.9550, 1.0111]
-[  695.9s] bootstrap KN-3 | adding the table to the unigram cache (value of order): ratio 0.8483 [0.8195, 0.8698]
-[  695.9s] bootstrap KN-3 | adding the unigram cache to the table: ratio 0.8611 [0.8430, 0.8801]
-[  695.9s] bootstrap KN-3 | direct glow vs KN: ratio 0.8945 [0.8838, 0.9042]
-[  695.9s] bootstrap KN-3 | adding direct glow to the unigram cache: ratio 0.9254 [0.9181, 0.9326]
-[  695.9s] bootstrap KN-3 | adding direct glow to both caches: ratio 0.9388 [0.9340, 0.9431]
-[  695.9s] bootstrap KN-3 | full PMI field vs identity (plain cluster cache): ratio 0.8985 [0.8883, 0.9080]
-[  695.9s] bootstrap KN-3 | full PMI field vs diagonal only: ratio 0.9380 [0.9334, 0.9423]
-[  695.9s] bootstrap KN-4 | unigram cache vs KN: ratio 0.7728 [0.7460, 0.8021]
-[  695.9s] bootstrap KN-4 | successor table vs KN: ratio 0.7677 [0.7369, 0.7960]
-[  695.9s] bootstrap KN-4 | successor table vs unigram cache: ratio 0.9933 [0.9641, 1.0197]
-[  695.9s] bootstrap KN-4 | adding the table to the unigram cache (value of order): ratio 0.8708 [0.8499, 0.8870]
-[  695.9s] bootstrap KN-4 | adding the unigram cache to the table: ratio 0.8766 [0.8631, 0.8915]
-[  695.9s] bootstrap KN-4 | direct glow vs KN: ratio 0.9059 [0.8977, 0.9139]
-[  695.9s] bootstrap KN-4 | adding direct glow to the unigram cache: ratio 0.9339 [0.9286, 0.9388]
-[  695.9s] bootstrap KN-4 | adding direct glow to both caches: ratio 0.9383 [0.9341, 0.9425]
-[  695.9s] bootstrap KN-4 | full PMI field vs identity (plain cluster cache): ratio 0.9110 [0.9029, 0.9190]
-[  695.9s] bootstrap KN-4 | full PMI field vs diagonal only: ratio 0.9462 [0.9422, 0.9501]
-[  695.9s] bootstrap KN-4 vs KN-3 (one more token of context): ratio 0.8252 [0.7672, 0.8750]
-[  773.8s] cloze KN-3: left acc@1 0.086 acc@10 0.225 mrr 0.134 | bidir acc@1 0.261
-[  773.8s] cloze KN-3 + unigram cache: left acc@1 0.087 acc@10 0.219 mrr 0.135 | bidir acc@1 0.269
-[  773.8s] cloze KN-3 + successor table: left acc@1 0.106 acc@10 0.278 mrr 0.166 | bidir acc@1 0.280
-[  773.8s] cloze KN-3 + unigram cache + successor table: left acc@1 0.120 acc@10 0.288 mrr 0.179 | bidir acc@1 0.296
-[  773.8s] cloze KN-3 + direct glow: left acc@1 0.107 acc@10 0.249 mrr 0.156 | bidir acc@1 0.273
-[  773.8s] cloze KN-3 + direct glow + both caches: left acc@1 0.128 acc@10 0.307 mrr 0.191 | bidir acc@1 0.300
-[  798.7s] induction KN-3: ppl first 281127.9 second 281127.9 acc 0.000
-[  798.7s] induction KN-3 + unigram cache: ppl first 319174.4 second 149.6 acc 0.000
-[  798.7s] induction KN-3 + successor table: ppl first 281127.9 second 8.4 acc 0.707
-[  798.7s] induction KN-3 + unigram cache + successor table: ppl first 319174.4 second 4.0 acc 0.971
-[  798.7s] induction KN-3 + direct glow: ppl first 1229355.6 second 421053.3 acc 0.000
-[  798.7s] induction KN-3 + direct glow + both caches: ppl first 1395730.8 second 4.0 acc 0.949
-[  798.7s] done
+[  107.1s] KN-4 fitted
+[  109.0s] KN-3: valid 145.62 test 149.21
+[  109.0s] KN-4: valid 121.74 test 123.12
+[  247.5s] clusters and affinity rebuilt
+[  252.7s] cache routes computed
+[  253.2s] cluster masses ready: order 3 valid
+[  254.0s] cluster masses ready: order 3 test
+[  254.7s] cluster masses ready: order 4 valid
+[  255.6s] cluster masses ready: order 4 test
+[  396.1s] cluster masses ready: permuted clusters valid
+[  540.3s] cluster masses ready: permuted clusters test
+[  682.4s] direct glow grid done for rho=0.9
+[  816.1s] direct glow grid done for rho=0.97
+[  954.7s] direct glow grid done for rho=0.99
+[ 1091.9s] direct glow grid done for rho=0.997
+[ 1184.8s] direct glow KN-3 [full PMI field]: rho=0.97 beta=3.0 valid 130.61 test 133.47
+[ 1184.8s] direct glow KN-4 [full PMI field]: rho=0.97 beta=3.0 valid 110.69 test 111.54
+[ 1184.8s] direct glow KN-3 [diagonal only (self-attraction)]: rho=0.99 beta=6.0 valid 139.54 test 142.30
+[ 1184.8s] direct glow KN-4 [diagonal only (self-attraction)]: rho=0.99 beta=6.0 valid 117.19 test 117.88
+[ 1184.8s] direct glow KN-3 [off-diagonal only]: rho=0.97 beta=3.0 valid 134.54 test 138.13
+[ 1184.8s] direct glow KN-4 [off-diagonal only]: rho=0.97 beta=3.0 valid 113.58 test 115.03
+[ 1184.8s] direct glow KN-3 [attraction only (A>0)]: rho=0.99 beta=4.0 valid 133.51 test 136.55
+[ 1184.8s] direct glow KN-4 [attraction only (A>0)]: rho=0.99 beta=4.0 valid 113.08 test 114.00
+[ 1184.8s] direct glow KN-3 [repulsion only (A<0)]: rho=0.9 beta=2.0 valid 141.57 test 144.85
+[ 1184.8s] direct glow KN-4 [repulsion only (A<0)]: rho=0.9 beta=2.0 valid 118.66 test 119.83
+[ 1184.8s] direct glow KN-3 [identity (plain cluster cache)]: rho=0.97 beta=1.0 valid 145.15 test 148.55
+[ 1184.8s] direct glow KN-4 [identity (plain cluster cache)]: rho=0.97 beta=1.0 valid 121.21 test 122.44
+[ 1184.8s] direct glow KN-3 [prior-normalised cluster cache (log-ratio, no PMI matrix)]: rho=0.997 beta=1.0 valid 119.62 test 120.98
+[ 1184.8s] direct glow KN-4 [prior-normalised cluster cache (log-ratio, no PMI matrix)]: rho=0.997 beta=1.0 valid 102.52 test 102.24
+[ 1254.5s] direct glow KN-3 [random clusters]: rho=0.97 beta=4.0 valid 144.25 test 147.70
+[ 1254.5s] KN-3 KN + unigram cache: {'decay_u': 0.997, 'decay_b': None, 'kappa_u': -2.0, 'kappa_b': None, 'valid_ppl': 114.89386449618932, 'test_ppl': 114.32480511919681}
+[ 1254.6s] KN-3 KN + successor table: {'decay_u': None, 'decay_b': 0.999, 'kappa_u': None, 'kappa_b': -2.0, 'valid_ppl': 110.9787472059779, 'test_ppl': 112.61646432939136}
+[ 1255.9s] KN-3 KN + unigram cache + successor table: {'decay_u': 0.997, 'decay_b': 0.999, 'kappa_u': -2.0, 'kappa_b': -1.0, 'valid_ppl': 97.96284418641072, 'test_ppl': 96.97731198358223}
+[ 1256.0s] KN-3 direct glow + unigram cache: {'decay_u': 0.997, 'decay_b': None, 'kappa_u': -2.0, 'kappa_b': None, 'valid_ppl': 106.25342405251908, 'test_ppl': 105.79622879073749}
+[ 1256.0s] KN-3 direct glow + successor table: {'decay_u': None, 'decay_b': 0.999, 'kappa_u': None, 'kappa_b': -2.0, 'valid_ppl': 101.90835534408596, 'test_ppl': 103.3575751977292}
+[ 1257.3s] KN-3 direct glow + unigram cache + successor table: {'decay_u': 0.997, 'decay_b': 0.999, 'kappa_u': -2.0, 'kappa_b': -1.0, 'valid_ppl': 91.81895620845461, 'test_ppl': 91.0393152960402}
+[ 1257.3s] KN-4 KN + unigram cache: {'decay_u': 0.997, 'decay_b': None, 'kappa_u': -2.0, 'kappa_b': None, 'valid_ppl': 96.56606143536622, 'test_ppl': 95.15175079811371}
+[ 1257.4s] KN-4 KN + successor table: {'decay_u': None, 'decay_b': 0.999, 'kappa_u': None, 'kappa_b': -2.0, 'valid_ppl': 94.03399200753384, 'test_ppl': 94.5170248173415}
+[ 1258.6s] KN-4 KN + unigram cache + successor table: {'decay_u': 0.997, 'decay_b': 0.999, 'kappa_u': -3.0, 'kappa_b': -2.0, 'valid_ppl': 83.7547393519232, 'test_ppl': 82.85472618860571}
+[ 1258.6s] KN-4 direct glow + unigram cache: {'decay_u': 0.997, 'decay_b': None, 'kappa_u': -2.0, 'kappa_b': None, 'valid_ppl': 90.2099708393634, 'test_ppl': 88.86341682272042}
+[ 1258.7s] KN-4 direct glow + successor table: {'decay_u': None, 'decay_b': 0.999, 'kappa_u': None, 'kappa_b': -2.0, 'valid_ppl': 87.11761155932484, 'test_ppl': 87.39816053461554}
+[ 1259.9s] KN-4 direct glow + unigram cache + successor table: {'decay_u': 0.997, 'decay_b': 0.999, 'kappa_u': -3.0, 'kappa_b': -2.0, 'valid_ppl': 78.56647377935278, 'test_ppl': 77.73847691742236}
+[ 1260.2s] bootstrap KN-3 | unigram cache vs KN: ratio 0.7662 [0.7417, 0.7944]
+[ 1260.2s] bootstrap KN-3 | successor table vs KN: ratio 0.7548 [0.7257, 0.7800]
+[ 1260.2s] bootstrap KN-3 | successor table vs unigram cache: ratio 0.9851 [0.9550, 1.0111]
+[ 1260.2s] bootstrap KN-3 | adding the table to the unigram cache (value of order): ratio 0.8483 [0.8195, 0.8698]
+[ 1260.2s] bootstrap KN-3 | adding the unigram cache to the table: ratio 0.8611 [0.8430, 0.8801]
+[ 1260.2s] bootstrap KN-3 | direct glow vs KN: ratio 0.8945 [0.8838, 0.9042]
+[ 1260.2s] bootstrap KN-3 | adding direct glow to the unigram cache: ratio 0.9254 [0.9181, 0.9326]
+[ 1260.2s] bootstrap KN-3 | adding direct glow to both caches: ratio 0.9388 [0.9340, 0.9431]
+[ 1260.2s] bootstrap KN-3 | full PMI field vs identity (plain cluster cache): ratio 0.8985 [0.8883, 0.9080]
+[ 1260.2s] bootstrap KN-3 | full PMI field vs diagonal only: ratio 0.9380 [0.9334, 0.9423]
+[ 1260.2s] bootstrap KN-3 | full PMI field vs prior-normalised cluster cache: ratio 1.1032 [1.0935, 1.1144]
+[ 1260.2s] bootstrap KN-4 | unigram cache vs KN: ratio 0.7728 [0.7463, 0.8035]
+[ 1260.2s] bootstrap KN-4 | successor table vs KN: ratio 0.7677 [0.7361, 0.7972]
+[ 1260.2s] bootstrap KN-4 | successor table vs unigram cache: ratio 0.9933 [0.9678, 1.0186]
+[ 1260.2s] bootstrap KN-4 | adding the table to the unigram cache (value of order): ratio 0.8708 [0.8489, 0.8874]
+[ 1260.2s] bootstrap KN-4 | adding the unigram cache to the table: ratio 0.8766 [0.8629, 0.8916]
+[ 1260.2s] bootstrap KN-4 | direct glow vs KN: ratio 0.9059 [0.8979, 0.9137]
+[ 1260.2s] bootstrap KN-4 | adding direct glow to the unigram cache: ratio 0.9339 [0.9288, 0.9392]
+[ 1260.2s] bootstrap KN-4 | adding direct glow to both caches: ratio 0.9383 [0.9343, 0.9425]
+[ 1260.2s] bootstrap KN-4 | full PMI field vs identity (plain cluster cache): ratio 0.9110 [0.9031, 0.9182]
+[ 1260.2s] bootstrap KN-4 | full PMI field vs diagonal only: ratio 0.9462 [0.9419, 0.9499]
+[ 1260.2s] bootstrap KN-4 | full PMI field vs prior-normalised cluster cache: ratio 1.0909 [1.0798, 1.1022]
+[ 1260.2s] bootstrap KN-3 | full PMI field: semantic clusters vs random clusters: ratio 0.9037 [0.8942, 0.9128]
+[ 1260.2s] bootstrap KN-3 | random-cluster field vs KN: ratio 0.9899 [0.9882, 0.9917]
+[ 1260.2s] bootstrap KN-4 vs KN-3 (one more token of context): ratio 0.8252 [0.7648, 0.8754]
+[ 1343.2s] cloze KN-3: left acc@1 0.086 acc@10 0.225 mrr 0.134 | bidir acc@1 0.261
+[ 1343.2s] cloze KN-3 + unigram cache: left acc@1 0.087 acc@10 0.219 mrr 0.135 | bidir acc@1 0.269
+[ 1343.2s] cloze KN-3 + successor table: left acc@1 0.106 acc@10 0.278 mrr 0.166 | bidir acc@1 0.280
+[ 1343.2s] cloze KN-3 + unigram cache + successor table: left acc@1 0.120 acc@10 0.288 mrr 0.179 | bidir acc@1 0.296
+[ 1343.2s] cloze KN-3 + direct glow: left acc@1 0.107 acc@10 0.249 mrr 0.156 | bidir acc@1 0.273
+[ 1343.2s] cloze KN-3 + direct glow + both caches: left acc@1 0.128 acc@10 0.307 mrr 0.191 | bidir acc@1 0.300
+[ 1368.2s] induction KN-3: ppl first 273304.7 second 273369.6 acc 0.000
+[ 1368.2s] induction KN-3 + unigram cache: ppl first 310292.5 second 149.5 acc 0.000
+[ 1368.2s] induction KN-3 + successor table: ppl first 273304.7 second 8.4 acc 0.715
+[ 1368.2s] induction KN-3 + unigram cache + successor table: ppl first 310292.5 second 4.0 acc 0.965
+[ 1368.2s] induction KN-3 + direct glow: ppl first 1240668.9 second 401963.1 acc 0.000
+[ 1368.2s] induction KN-3 + direct glow + both caches: ppl first 1408575.2 second 4.0 acc 0.947
+[ 1368.2s] done

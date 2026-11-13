@@ -199,9 +199,20 @@ def main() -> None:
     E = S.svd_embed(Pp, args.dim, seed=args.seed)
     labels = S.kmeans(E, args.kcl, seed=args.seed)
     A = S.cluster_affinity(C, labels, args.kcl)
+    # control: destroy the semantics of the clusters but keep their sizes and frequency profile
+    perm_labels = labels.copy()
+    prng = np.random.default_rng(args.seed + 1)
+    for s0 in range(0, M, 500):
+        prng.shuffle(perm_labels[s0:s0 + 500])
+    A_perm = S.cluster_affinity(C, perm_labels, args.kcl)
     del C, Pp, E
     cluster = np.full(V, -1, dtype=np.int32)
     cluster[:M] = labels
+    cluster_perm = np.full(V, -1, dtype=np.int32)
+    cluster_perm[:M] = perm_labels
+    uni = kn.counts[(1, "raw")].astype(np.float64)
+    prior = np.bincount(labels, weights=uni[:M], minlength=args.kcl)
+    prior = (prior / prior.sum()).astype(np.float32)          # training frequency of each cluster
     log("clusters and affinity rebuilt")
 
     # ---------------------------------------------------------- cache routes
@@ -226,6 +237,16 @@ def main() -> None:
                 np.save(cache, Pc[(o, name)])
             log(f"cluster masses ready: order {o} {name}")
 
+    Pc_perm = {}
+    for name in streams:
+        cache = os.path.join(args.out_dir, "cache", f"cluster_mass_perm{args.seed + 1}_{name}_{args.kcl}_3_{args.max_train_tokens}.npy")
+        if os.path.exists(cache):
+            Pc_perm[name] = np.load(cache)
+        else:
+            Pc_perm[name] = cluster_mass_stream(KNView(kn, 3), {n: hist[name][n] for n in range(2, 4)}, cluster_perm, args.kcl, args.procs)
+            np.save(cache, Pc_perm[name])
+        log(f"cluster masses ready: permuted clusters {name}")
+
     # ------------------------------------------------- direct glow, affinity variants
     # memory: drop what is no longer needed (order-4 tables are only used for the scores computed above)
     corpus.train = None
@@ -237,8 +258,10 @@ def main() -> None:
 
     rhos = [0.9, 0.97, 0.99, 0.997]
     betas = [0.25, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 6.0, 8.0, 12.0]
-    variants = affinity_variants(A)
     kcl = args.kcl
+    LOGRATIO = "prior-normalised cluster cache (log-ratio, no PMI matrix)"
+    variants = {name: (lambda H, Av=Av: H @ Av.T) for name, Av in affinity_variants(A).items()}
+    variants[LOGRATIO] = lambda H: np.log((H + prior) / (2.0 * prior))
 
     def direct_scores(name, u_all, beta):
         """log P for both orders under P'(x) ~ P_KN(x) exp(beta u[cl(x)]), exact, chunked in float64."""
@@ -257,8 +280,8 @@ def main() -> None:
     best = {(o, v): None for o in orders for v in variants}
     for rho in rhos:
         Hv = glow_hist(corpus.valid, corpus.valid_starts, cluster, kcl, rho)
-        for vname, Av in variants.items():
-            u = Hv @ Av.T
+        for vname, fn in variants.items():
+            u = fn(Hv)
             for beta in betas:
                 sc = direct_scores("valid", u, beta)
                 for o in orders:
@@ -276,7 +299,7 @@ def main() -> None:
             continue
         H = {name: glow_hist(ids_, st_, cluster, kcl, rho) for name, (ids_, st_) in streams.items()}
         for vname in sorted({v for _, v in need}):
-            u = {name: H[name] @ variants[vname].T for name in streams}
+            u = {name: variants[vname](H[name]) for name in streams}
             for o in [o for o, v in need if v == vname]:
                 bst = best[(o, vname)]
                 for name in streams:
@@ -290,6 +313,37 @@ def main() -> None:
             bst = best[(o, vname)]
             R["direct_glow"][f"KN-{o} | {vname}"] = bst
             log(f"direct glow KN-{o} [{vname}]: rho={bst['rho']} beta={bst['beta']} valid {bst['valid_ppl']:.2f} test {bst['test_ppl']:.2f}")
+
+    # control: same pipeline on frequency-matched RANDOM clusters (order 3)
+    def direct_perm(name, u_all, beta):
+        ids_ = streams[name][0]
+        T = len(ids_)
+        cl = cluster_perm[ids_]
+        boost = np.where(cl >= 0, beta * u_all[np.arange(T), np.maximum(cl, 0)].astype(np.float64), 0.0)
+        Z = np.empty(T)
+        for s0 in range(0, T, 20000):
+            e = np.exp(beta * u_all[s0:s0 + 20000].astype(np.float64))
+            pc = Pc_perm[name][s0:s0 + 20000]
+            Z[s0:s0 + 20000] = (pc[:, :kcl] * e).sum(axis=1) + pc[:, kcl]
+        return lp_kn[3][name] + boost - np.log(Z)
+
+    bp = None
+    for rho in rhos:
+        u = glow_hist(corpus.valid, corpus.valid_starts, cluster_perm, kcl, rho) @ A_perm.T
+        for beta in betas:
+            pv = perplexity(direct_perm("valid", u, beta))
+            if bp is None or pv < bp["valid_ppl"]:
+                bp = {"rho": rho, "beta": beta, "valid_ppl": pv}
+        del u
+    u = glow_hist(corpus.test, corpus.test_starts, cluster_perm, kcl, bp["rho"]) @ A_perm.T
+    lp_perm_test = direct_perm("test", u, bp["beta"])
+    del u
+    bp["test_ppl"] = perplexity(lp_perm_test)
+    bp["edge"] = bp["beta"] in (betas[0], betas[-1]) or bp["rho"] in (rhos[0], rhos[-1])
+    RANDOM = "full PMI field on RANDOM clusters (frequency-matched shuffle of the labels)"
+    R["direct_glow"][f"KN-3 | {RANDOM}"] = bp
+    log(f"direct glow KN-3 [random clusters]: rho={bp['rho']} beta={bp['beta']} valid {bp['valid_ppl']:.2f} test {bp['test_ppl']:.2f}")
+    del Pc_perm
 
     # ------------------------------------------------- caches on top of KN and of direct glow
     R["caches"] = {}
@@ -328,6 +382,11 @@ def main() -> None:
             lp_direct[(o, FULL, "test")], lp_direct[(o, "identity (plain cluster cache)", "test")], blocks, args.bootstrap, rng)
         R["bootstrap"][f"KN-{o} | full PMI field vs diagonal only"] = paired_bootstrap(
             lp_direct[(o, FULL, "test")], lp_direct[(o, "diagonal only (self-attraction)", "test")], blocks, args.bootstrap, rng)
+        R["bootstrap"][f"KN-{o} | full PMI field vs prior-normalised cluster cache"] = paired_bootstrap(
+            lp_direct[(o, FULL, "test")], lp_direct[(o, LOGRATIO, "test")], blocks, args.bootstrap, rng)
+    R["bootstrap"]["KN-3 | full PMI field: semantic clusters vs random clusters"] = paired_bootstrap(
+        lp_direct[(3, FULL, "test")], lp_perm_test, blocks, args.bootstrap, rng)
+    R["bootstrap"]["KN-3 | random-cluster field vs KN"] = paired_bootstrap(lp_perm_test, lp_kn[3]["test"], blocks, args.bootstrap, rng)
     R["bootstrap"]["KN-4 vs KN-3 (one more token of context)"] = paired_bootstrap(lp_kn[4]["test"], lp_kn[3]["test"], blocks, args.bootstrap, rng)
     for k, v in R["bootstrap"].items():
         log(f"bootstrap {k}: ratio {v['ppl_ratio']:.4f} [{v['ci95'][0]:.4f}, {v['ci95'][1]:.4f}]")
