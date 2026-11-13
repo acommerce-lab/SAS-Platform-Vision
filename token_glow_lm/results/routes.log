@@ -1,0 +1,20 @@
+[  151.1s] KN-4 fitted
+[  381.6s] 'king': sym: throne, kings, King, overlord, kingship, kingdom | succ: emperor, Emperor, prince, Stalin, bishop, Hitler | pred: prince, kings, monarch, ruler, queen, emperor | both: emperor, prince, ruler, Emperor, monarch, queen
+[  381.6s] 'river': sym: rivers, upstream, downstream, creek, River, stream | succ: stream, creek, lake, canal, River, lava | pred: valley, lake, rivers, creek, canyon, valleys | both: creek, stream, lake, valley, canyon, rivers
+[  381.6s] 'said': sym: stated, commented, remarked, joked, felt, opined | succ: says, saying, thought, stated, stating, believed | pred: stated, commented, described, wrote, noted, remarked | both: stated, commented, thought, explained, remarked, opined
+[  381.6s] 'doctor': sym: doctors, hospital, surgeon, physician, patient, nurse | succ: priest, officer, soldier, teacher, sailor, lawyer | pred: physician, surgeon, psychiatrist, nurse, lawyer, doctors | both: physician, surgeon, psychiatrist, lawyer, priest, nurse
+[  381.6s] 'the': sym: of, and, ., end, time, first | succ: The, entire, whole, eponymous, original, defunct | pred: its, these, his, their, this, certain | both: its, this, his, their, each, our
+[  381.6s] 'in': sym: In, January, December, March, February, April | succ: From, In, Throughout, between, from, Between | pred: at, on, elsewhere, outside, alongside, during | both: throughout, until, at, outside, between, since
+[  381.6s] 'football': sym: soccer, rugby, basketball, lacrosse, varsity, collegiate | succ: basketball, hockey, baseball, soccer, tennis, rugby | pred: basketball, baseball, hockey, rugby, athletics, lacrosse | both: basketball, hockey, baseball, rugby, soccer, lacrosse
+[  381.8s] mean overlap of the 40 children: {'sym/succ': 0.18302613159122727, 'sym/pred': 0.18275198320111993, 'succ/pred': 0.15799696686887543}
+[  382.5s] KN-3: valid 145.62 test 149.21 buckets {'unseen': 0.06887677190524863, '1-2': 0.048690999271080636, '3-9': 0.07041605414364191, '10-99': 0.18666036836897165, '>=100': 0.6253558063110571}
+[  424.8s] KN-3 children=sym: global K=40 gamma=8.0 tau=4.0 test 148.19 | bucketed K=40 gamma=8.0 tau=[3.0, 3.0, 3.0, 4.0, 5.0] test 148.04 (ratio 0.9922)
+[  468.8s] KN-3 children=succ: global K=40 gamma=4.0 tau=5.0 test 147.32 | bucketed K=40 gamma=2.0 tau=[4.0, 4.0, 5.0, 5.0, 6.0] test 146.99 (ratio 0.9852)
+[  515.0s] KN-3 children=pred: global K=20 gamma=2.0 tau=6.0 test 148.33 | bucketed K=40 gamma=4.0 tau=[4.0, 4.0, 4.0, 5.0, 8.0] test 147.89 (ratio 0.9912)
+[  559.1s] KN-3 children=both: global K=40 gamma=4.0 tau=4.0 test 146.41 | bucketed K=40 gamma=4.0 tau=[3.0, 3.0, 3.0, 3.0, 4.0] test 146.00 (ratio 0.9785)
+[  561.3s] KN-4: valid 121.74 test 123.12 buckets {'unseen': 0.3117575915526797, '1-2': 0.1279192406207624, '3-9': 0.12067891305498658, '10-99': 0.20219978906132288, '>=100': 0.23744446571024844}
+[  615.8s] KN-4 children=sym: global K=40 gamma=8.0 tau=4.0 test 122.06 | bucketed K=40 gamma=8.0 tau=[3.0, 4.0, 4.0, 4.0, 5.0] test 121.86 (ratio 0.9898)
+[  670.8s] KN-4 children=succ: global K=20 gamma=2.0 tau=5.0 test 121.26 | bucketed K=40 gamma=4.0 tau=[4.0, 5.0, 5.0, 5.0, 6.0] test 120.95 (ratio 0.9824)
+[  727.9s] KN-4 children=pred: global K=10 gamma=2.0 tau=5.0 test 122.15 | bucketed K=20 gamma=4.0 tau=[4.0, 5.0, 5.0, 5.0, 8.0] test 121.85 (ratio 0.9897)
+[  783.6s] KN-4 children=both: global K=20 gamma=4.0 tau=3.0 test 120.41 | bucketed K=40 gamma=4.0 tau=[3.0, 4.0, 4.0, 4.0, 5.0] test 119.96 (ratio 0.9743)
+[  783.6s] done

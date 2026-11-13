@@ -1,0 +1,730 @@
+{
+ "args": {
+  "data_dir": "/home/user/SAS-Platform-Vision/token_glow_lm/data/wikitext-103-v1",
+  "out_dir": "results",
+  "max_train_tokens": null,
+  "M": 30000,
+  "window": 5,
+  "dim": 200,
+  "bootstrap": 2000,
+  "seed": 0
+ },
+ "children_examples": {
+  "king": {
+   "sym": [
+    "throne",
+    "kings",
+    "King",
+    "overlord",
+    "kingship",
+    "kingdom",
+    "\u00c6thelred",
+    "overlordship"
+   ],
+   "succ": [
+    "emperor",
+    "Emperor",
+    "prince",
+    "Stalin",
+    "bishop",
+    "Hitler",
+    "pope",
+    "Tsar"
+   ],
+   "pred": [
+    "prince",
+    "kings",
+    "monarch",
+    "ruler",
+    "queen",
+    "emperor",
+    "rulers",
+    "lord"
+   ],
+   "both": [
+    "emperor",
+    "prince",
+    "ruler",
+    "Emperor",
+    "monarch",
+    "queen",
+    "bishop",
+    "King"
+   ]
+  },
+  "river": {
+   "sym": [
+    "rivers",
+    "upstream",
+    "downstream",
+    "creek",
+    "River",
+    "stream",
+    "navigable",
+    "Parrett"
+   ],
+   "succ": [
+    "stream",
+    "creek",
+    "lake",
+    "canal",
+    "River",
+    "lava",
+    "water",
+    "ocean"
+   ],
+   "pred": [
+    "valley",
+    "lake",
+    "rivers",
+    "creek",
+    "canyon",
+    "valleys",
+    "basin",
+    "gorge"
+   ],
+   "both": [
+    "creek",
+    "stream",
+    "lake",
+    "valley",
+    "canyon",
+    "rivers",
+    "canal",
+    "basin"
+   ]
+  },
+  "said": {
+   "sym": [
+    "stated",
+    "commented",
+    "remarked",
+    "joked",
+    "felt",
+    "opined",
+    "explained",
+    "told"
+   ],
+   "succ": [
+    "says",
+    "saying",
+    "thought",
+    "stated",
+    "stating",
+    "believed",
+    "opined",
+    "explains"
+   ],
+   "pred": [
+    "stated",
+    "commented",
+    "described",
+    "wrote",
+    "noted",
+    "remarked",
+    "felt",
+    "explained"
+   ],
+   "both": [
+    "stated",
+    "commented",
+    "thought",
+    "explained",
+    "remarked",
+    "opined",
+    "described",
+    "wrote"
+   ]
+  },
+  "doctor": {
+   "sym": [
+    "doctors",
+    "hospital",
+    "surgeon",
+    "physician",
+    "patient",
+    "nurse",
+    "psychiatrist",
+    "clinic"
+   ],
+   "succ": [
+    "priest",
+    "officer",
+    "soldier",
+    "teacher",
+    "sailor",
+    "lawyer",
+    "psychiatrist",
+    "surgeon"
+   ],
+   "pred": [
+    "physician",
+    "surgeon",
+    "psychiatrist",
+    "nurse",
+    "lawyer",
+    "doctors",
+    "detective",
+    "scientist"
+   ],
+   "both": [
+    "physician",
+    "surgeon",
+    "psychiatrist",
+    "lawyer",
+    "priest",
+    "nurse",
+    "soldier",
+    "officer"
+   ]
+  },
+  "the": {
+   "sym": [
+    "of",
+    "and",
+    ".",
+    "end",
+    "time",
+    "first",
+    "The",
+    ","
+   ],
+   "succ": [
+    "The",
+    "entire",
+    "whole",
+    "eponymous",
+    "original",
+    "defunct",
+    "impending",
+    "its"
+   ],
+   "pred": [
+    "its",
+    "these",
+    "his",
+    "their",
+    "this",
+    "certain",
+    "both",
+    "our"
+   ],
+   "both": [
+    "its",
+    "this",
+    "his",
+    "their",
+    "each",
+    "our",
+    "another",
+    "her"
+   ]
+  },
+  "in": {
+   "sym": [
+    "In",
+    "January",
+    "December",
+    "March",
+    "February",
+    "April",
+    "November",
+    "June"
+   ],
+   "succ": [
+    "From",
+    "In",
+    "Throughout",
+    "between",
+    "from",
+    "Between",
+    "By",
+    "Until"
+   ],
+   "pred": [
+    "at",
+    "on",
+    "elsewhere",
+    "outside",
+    "alongside",
+    "during",
+    "with",
+    "within"
+   ],
+   "both": [
+    "throughout",
+    "until",
+    "at",
+    "outside",
+    "between",
+    "since",
+    "circa",
+    "from"
+   ]
+  },
+  "football": {
+   "sym": [
+    "soccer",
+    "rugby",
+    "basketball",
+    "lacrosse",
+    "varsity",
+    "collegiate",
+    "teams",
+    "athletics"
+   ],
+   "succ": [
+    "basketball",
+    "hockey",
+    "baseball",
+    "soccer",
+    "tennis",
+    "rugby",
+    "lacrosse",
+    "cricket"
+   ],
+   "pred": [
+    "basketball",
+    "baseball",
+    "hockey",
+    "rugby",
+    "athletics",
+    "lacrosse",
+    "soccer",
+    "sports"
+   ],
+   "both": [
+    "basketball",
+    "hockey",
+    "baseball",
+    "rugby",
+    "soccer",
+    "lacrosse",
+    "tennis",
+    "cricket"
+   ]
+  }
+ },
+ "children_overlap": {
+  "sym/succ": 0.18302613159122727,
+  "sym/pred": 0.18275198320111993,
+  "succ/pred": 0.15799696686887543
+ },
+ "experiments": {
+  "KN-3 | sym": {
+   "global": {
+    "K": 40,
+    "gamma": 8.0,
+    "tau_global": 4.0,
+    "valid_ppl_global": 144.49093797226138,
+    "test_ppl": 148.1894894285106,
+    "vs_kn": {
+     "ppl_ratio": 0.9931811352919354,
+     "ci95": [
+      0.9909506296222351,
+      0.9956879896016112
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    }
+   },
+   "bucketed": {
+    "K": 40,
+    "gamma": 8.0,
+    "tau_bucket": {
+     "unseen": 3.0,
+     "1-2": 3.0,
+     "3-9": 3.0,
+     "10-99": 4.0,
+     ">=100": 5.0
+    },
+    "valid_ppl": 144.32153548157962,
+    "test_ppl": 148.0373976851715,
+    "vs_kn": {
+     "ppl_ratio": 0.9921618008512751,
+     "ci95": [
+      0.9900291733255038,
+      0.9944211247021817
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    },
+    "test_ppl_by_bucket": {
+     "unseen": 217.9573944150898,
+     "1-2": 102.15861804046506,
+     "3-9": 103.49185716109125,
+     "10-99": 109.37137425193134,
+     ">=100": 166.4018178986006
+    }
+   }
+  },
+  "KN-3 | succ": {
+   "global": {
+    "K": 40,
+    "gamma": 4.0,
+    "tau_global": 5.0,
+    "valid_ppl_global": 143.60583702979739,
+    "test_ppl": 147.31643888024996,
+    "vs_kn": {
+     "ppl_ratio": 0.9873298611021604,
+     "ci95": [
+      0.9842277462453566,
+      0.9909168902126988
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    }
+   },
+   "bucketed": {
+    "K": 40,
+    "gamma": 2.0,
+    "tau_bucket": {
+     "unseen": 4.0,
+     "1-2": 4.0,
+     "3-9": 5.0,
+     "10-99": 5.0,
+     ">=100": 6.0
+    },
+    "valid_ppl": 143.19851531570148,
+    "test_ppl": 146.99460522051615,
+    "vs_kn": {
+     "ppl_ratio": 0.9851728989533458,
+     "ci95": [
+      0.9809408932787191,
+      0.990179419822227
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    },
+    "test_ppl_by_bucket": {
+     "unseen": 215.33548409600385,
+     "1-2": 102.01238867209882,
+     "3-9": 102.33346049827549,
+     "10-99": 107.8180872962581,
+     ">=100": 165.68408358088774
+    }
+   }
+  },
+  "KN-3 | pred": {
+   "global": {
+    "K": 20,
+    "gamma": 2.0,
+    "tau_global": 6.0,
+    "valid_ppl_global": 144.77869322162468,
+    "test_ppl": 148.33077613472085,
+    "vs_kn": {
+     "ppl_ratio": 0.9941280532671318,
+     "ci95": [
+      0.9925446943452915,
+      0.9959264806441916
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    }
+   },
+   "bucketed": {
+    "K": 40,
+    "gamma": 4.0,
+    "tau_bucket": {
+     "unseen": 4.0,
+     "1-2": 4.0,
+     "3-9": 4.0,
+     "10-99": 5.0,
+     ">=100": 8.0
+    },
+    "valid_ppl": 144.31182232344543,
+    "test_ppl": 147.89237773717738,
+    "vs_kn": {
+     "ppl_ratio": 0.9911898623072911,
+     "ci95": [
+      0.9888533069856003,
+      0.9937512419423048
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    },
+    "test_ppl_by_bucket": {
+     "unseen": 217.3095715821781,
+     "1-2": 101.49178151313878,
+     "3-9": 102.84146639541112,
+     "10-99": 108.78821008290979,
+     ">=100": 166.66429756587752
+    }
+   }
+  },
+  "KN-3 | both": {
+   "global": {
+    "K": 40,
+    "gamma": 4.0,
+    "tau_global": 4.0,
+    "valid_ppl_global": 142.83808754179864,
+    "test_ppl": 146.41204755787024,
+    "vs_kn": {
+     "ppl_ratio": 0.9812685378344083,
+     "ci95": [
+      0.9773865570466015,
+      0.985929263890435
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    }
+   },
+   "bucketed": {
+    "K": 40,
+    "gamma": 4.0,
+    "tau_bucket": {
+     "unseen": 3.0,
+     "1-2": 3.0,
+     "3-9": 3.0,
+     "10-99": 3.0,
+     ">=100": 4.0
+    },
+    "valid_ppl": 142.4265939902285,
+    "test_ppl": 146.00404210349305,
+    "vs_kn": {
+     "ppl_ratio": 0.9785340434924249,
+     "ci95": [
+      0.9727375147418259,
+      0.9851854270356545
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    },
+    "test_ppl_by_bucket": {
+     "unseen": 212.2765728500935,
+     "1-2": 99.80435442947672,
+     "3-9": 100.78934773583113,
+     "10-99": 106.38772459802482,
+     ">=100": 165.38042706264483
+    }
+   }
+  },
+  "KN-4 | sym": {
+   "global": {
+    "K": 40,
+    "gamma": 8.0,
+    "tau_global": 4.0,
+    "valid_ppl_global": 120.53916610453483,
+    "test_ppl": 122.05746249124721,
+    "vs_kn": {
+     "ppl_ratio": 0.991349560240581,
+     "ci95": [
+      0.9887816303758143,
+      0.9942092719306841
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    }
+   },
+   "bucketed": {
+    "K": 40,
+    "gamma": 8.0,
+    "tau_bucket": {
+     "unseen": 3.0,
+     "1-2": 4.0,
+     "3-9": 4.0,
+     "10-99": 4.0,
+     ">=100": 5.0
+    },
+    "valid_ppl": 120.32959179848868,
+    "test_ppl": 121.86439961714494,
+    "vs_kn": {
+     "ppl_ratio": 0.9897815053963002,
+     "ci95": [
+      0.9870654206362766,
+      0.9924971153593898
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    },
+    "test_ppl_by_bucket": {
+     "unseen": 199.69143387473048,
+     "1-2": 78.33365209915722,
+     "3-9": 89.11943642235286,
+     "10-99": 94.96326429842617,
+     ">=100": 117.21432226239531
+    }
+   }
+  },
+  "KN-4 | succ": {
+   "global": {
+    "K": 20,
+    "gamma": 2.0,
+    "tau_global": 5.0,
+    "valid_ppl_global": 119.67996969982056,
+    "test_ppl": 121.25835016741885,
+    "vs_kn": {
+     "ppl_ratio": 0.9848591774762572,
+     "ci95": [
+      0.9806034894631518,
+      0.9897739051939654
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    }
+   },
+   "bucketed": {
+    "K": 40,
+    "gamma": 4.0,
+    "tau_bucket": {
+     "unseen": 4.0,
+     "1-2": 5.0,
+     "3-9": 5.0,
+     "10-99": 5.0,
+     ">=100": 6.0
+    },
+    "valid_ppl": 119.392443712039,
+    "test_ppl": 120.95166521850798,
+    "vs_kn": {
+     "ppl_ratio": 0.9823682852110093,
+     "ci95": [
+      0.9788649718901696,
+      0.986698281946161
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    },
+    "test_ppl_by_bucket": {
+     "unseen": 197.28382484007125,
+     "1-2": 77.96857054951658,
+     "3-9": 88.71914882757902,
+     "10-99": 94.20459167120762,
+     ">=100": 116.73467442860688
+    }
+   }
+  },
+  "KN-4 | pred": {
+   "global": {
+    "K": 10,
+    "gamma": 2.0,
+    "tau_global": 5.0,
+    "valid_ppl_global": 120.75458457996778,
+    "test_ppl": 122.15297526019555,
+    "vs_kn": {
+     "ppl_ratio": 0.9921253140499885,
+     "ci95": [
+      0.9898051220700093,
+      0.9948460416894633
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    }
+   },
+   "bucketed": {
+    "K": 20,
+    "gamma": 4.0,
+    "tau_bucket": {
+     "unseen": 4.0,
+     "1-2": 5.0,
+     "3-9": 5.0,
+     "10-99": 5.0,
+     ">=100": 8.0
+    },
+    "valid_ppl": 120.45251440287893,
+    "test_ppl": 121.84845894196768,
+    "vs_kn": {
+     "ppl_ratio": 0.9896520353827133,
+     "ci95": [
+      0.9872272469208965,
+      0.9922257821000483
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    },
+    "test_ppl_by_bucket": {
+     "unseen": 199.38104692369765,
+     "1-2": 78.34816941500776,
+     "3-9": 88.98381567549357,
+     "10-99": 95.06400967975809,
+     ">=100": 117.3624226885741
+    }
+   }
+  },
+  "KN-4 | both": {
+   "global": {
+    "K": 20,
+    "gamma": 4.0,
+    "tau_global": 3.0,
+    "valid_ppl_global": 118.89784501108373,
+    "test_ppl": 120.40712141030677,
+    "vs_kn": {
+     "ppl_ratio": 0.9779455055318851,
+     "ci95": [
+      0.9715058392828788,
+      0.9854812885791298
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    }
+   },
+   "bucketed": {
+    "K": 40,
+    "gamma": 4.0,
+    "tau_bucket": {
+     "unseen": 3.0,
+     "1-2": 4.0,
+     "3-9": 4.0,
+     "10-99": 4.0,
+     ">=100": 5.0
+    },
+    "valid_ppl": 118.52184646217509,
+    "test_ppl": 119.962963341869,
+    "vs_kn": {
+     "ppl_ratio": 0.9743380578852106,
+     "ci95": [
+      0.9695208069046355,
+      0.9797134855639044
+     ],
+     "p_not_better": 0.0,
+     "blocks": 63
+    },
+    "test_ppl_by_bucket": {
+     "unseen": 193.95447960910263,
+     "1-2": 77.4935570195546,
+     "3-9": 87.99073252933266,
+     "10-99": 93.7273660836274,
+     ">=100": 116.68634950316775
+    }
+   }
+  }
+ },
+ "baseline": {
+  "KN-3": {
+   "valid_ppl": 145.61874364084252,
+   "test_ppl": 149.2069111692826,
+   "test_bucket_share": {
+    "unseen": 0.06887677190524863,
+    "1-2": 0.048690999271080636,
+    "3-9": 0.07041605414364191,
+    "10-99": 0.18666036836897165,
+    ">=100": 0.6253558063110571
+   },
+   "test_bucket_ppl": {
+    "unseen": 222.3489359245654,
+    "1-2": 103.30184053831589,
+    "3-9": 105.3515403759441,
+    "10-99": 111.10609738419966,
+    ">=100": 166.87127557279794
+   }
+  },
+  "KN-4": {
+   "valid_ppl": 121.7426486708769,
+   "test_ppl": 123.12252648967362,
+   "test_bucket_share": {
+    "unseen": 0.3117575915526797,
+    "1-2": 0.1279192406207624,
+    "3-9": 0.12067891305498658,
+    "10-99": 0.20219978906132288,
+    ">=100": 0.23744446571024844
+   },
+   "test_bucket_ppl": {
+    "unseen": 203.88393821828944,
+    "1-2": 78.81514740396705,
+    "3-9": 89.88126883001046,
+    "10-99": 95.68340245621093,
+    ">=100": 117.43906247869462
+   }
+  }
+ },
+ "runtime_sec": 783.5823264122009
+}
